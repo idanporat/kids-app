@@ -3,29 +3,98 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { updateChildAvatar } from "@/app/actions/avatar";
+import { updateChildName } from "@/app/actions/child-profile";
+import { deleteChildAccount } from "@/app/actions/delete-child";
 import { createDeposit } from "@/app/actions/deposits";
 import { updateAnnualInterest } from "@/app/actions/interest";
 import { formatIls } from "@/lib/format";
+import { createClient } from "@/utils/supabase/client";
 
 type Props = {
   accountId: string;
   childName: string | null;
-  childEmail: string;
   balance: number;
   annualInterestPercent: number;
+  inviteToken: string | null;
+  avatarUrl: string | null;
 };
 
 export function ParentChildCard({
   accountId,
   childName,
-  childEmail,
   balance,
   annualInterestPercent,
+  inviteToken,
+  avatarUrl,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [depositMsg, setDepositMsg] = useState<string | null>(null);
   const [rateMsg, setRateMsg] = useState<string | null>(null);
+  const [nameMsg, setNameMsg] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState(false);
+  const [nameValue, setNameValue] = useState(childName ?? "");
+  const [copied, setCopied] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [avatarSrc, setAvatarSrc] = useState(avatarUrl);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("הקובץ גדול מדי (מקסימום 2MB)");
+      return;
+    }
+    setUploadingAvatar(true);
+    try {
+      const supabase = createClient();
+      const ext = file.name.split(".").pop();
+      const path = `${accountId}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true });
+      if (uploadError) {
+        alert(uploadError.message);
+        return;
+      }
+      const { data: urlData } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(path);
+      const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+      const res = await updateChildAvatar(accountId, publicUrl);
+      if (res.ok) {
+        setAvatarSrc(publicUrl);
+        router.refresh();
+      }
+    } finally {
+      setUploadingAvatar(false);
+    }
+  }
+
+  function handleDelete() {
+    startTransition(async () => {
+      const res = await deleteChildAccount(accountId);
+      if (res.ok) {
+        router.refresh();
+      }
+    });
+  }
+
+  function submitName(e: React.FormEvent) {
+    e.preventDefault();
+    setNameMsg(null);
+    startTransition(async () => {
+      const res = await updateChildName(accountId, nameValue);
+      setNameMsg(res.ok ? "השם עודכן" : res.message);
+      if (res.ok) {
+        setEditingName(false);
+        router.refresh();
+      }
+    });
+  }
 
   function submitDeposit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,19 +128,148 @@ export function ParentChildCard({
     });
   }
 
-  return (
-    <article className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-[var(--card)] p-6 space-y-5">
-      <header>
-        <h2 className="text-xl font-semibold">{childName || "ילד"}</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400" dir="ltr">
-          {childEmail}
-        </p>
-        <p className="mt-3 text-2xl font-bold text-emerald-700 dark:text-emerald-400">
-          יתרה: {formatIls(balance)}
-        </p>
-      </header>
+  async function copyLink() {
+    if (!inviteToken) return;
+    const link = `${window.location.origin}/join/${inviteToken}`;
+    await navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
-      <form onSubmit={submitDeposit} className="space-y-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
+  return (
+    <article className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-[var(--card)]">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-4 text-right"
+      >
+        <div className="flex items-center gap-3">
+          {avatarSrc ? (
+            <img src={avatarSrc} alt="" className="h-10 w-10 rounded-full object-cover" />
+          ) : (
+            <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-lg">
+              {(childName || "ילד")[0]}
+            </div>
+          )}
+          <h2 className="text-lg font-semibold">{childName || "ילד"}</h2>
+          <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400">
+            {formatIls(balance)}
+          </span>
+        </div>
+        <svg
+          className={`h-5 w-5 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="px-4 pb-4 space-y-5">
+          <header>
+            <div className="flex items-center gap-2">
+              {editingName ? (
+                <form onSubmit={submitName} className="flex items-center gap-2 flex-1">
+                  <input
+                    value={nameValue}
+                    onChange={(e) => setNameValue(e.target.value)}
+                    required
+                    disabled={pending}
+                    className="flex-1 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-1.5 text-base font-semibold"
+                  />
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className="rounded-lg bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-60"
+                  >
+                    שמור
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setEditingName(false); setNameValue(childName ?? ""); }}
+                    className="rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700"
+                  >
+                    ביטול
+                  </button>
+                </form>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setEditingName(true)}
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 flex items-center gap-1 text-sm"
+                  title="ערוך שם"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                  ערוך שם
+                </button>
+              )}
+            </div>
+            {nameMsg && (
+              <p className={`text-sm mt-1 ${nameMsg === "השם עודכן" ? "text-emerald-600" : "text-red-600"}`}>
+                {nameMsg}
+              </p>
+            )}
+            <div className="mt-3 flex items-center gap-3">
+              <label className="cursor-pointer text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                {uploadingAvatar ? "מעלה..." : "📷 שנה תמונה"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleAvatarUpload}
+                  disabled={uploadingAvatar}
+                />
+              </label>
+            </div>
+            <p className="mt-2 text-sm text-slate-500">
+              אחוז שנתי: <span className="font-medium text-slate-800 dark:text-slate-200">{annualInterestPercent}%</span>
+            </p>
+            {inviteToken && (
+              <div className="mt-2">
+                <button
+                  type="button"
+                  onClick={copyLink}
+                  className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {copied ? "הקישור הועתק!" : "📋 העתק קישור לילד"}
+                </button>
+              </div>
+            )}
+            <div className="mt-3">
+              {confirmDelete ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-red-600">למחוק את הילד?</span>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={pending}
+                    className="rounded-lg bg-red-600 px-3 py-1 text-xs text-white hover:bg-red-700 disabled:opacity-60"
+                  >
+                    כן, מחק
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDelete(false)}
+                    className="rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-1 text-xs hover:bg-slate-100 dark:hover:bg-slate-700"
+                  >
+                    ביטול
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                  className="text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                >
+                  🗑️ מחק ילד
+                </button>
+              )}
+            </div>
+          </header>
+
+          <form onSubmit={submitDeposit} className="space-y-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
         <h3 className="text-sm font-medium">הפקדה לילד</h3>
         <div className="flex flex-wrap gap-2 items-end">
           <div className="flex-1 min-w-[120px]">
@@ -143,6 +341,8 @@ export function ParentChildCard({
           </p>
         )}
       </form>
+        </div>
+      )}
     </article>
   );
 }

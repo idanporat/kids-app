@@ -27,22 +27,24 @@ export default async function ParentPage() {
 
   const { data: accounts } = await supabase
     .from("child_accounts")
-    .select("id, balance, annual_interest_percent, child_user_id")
+    .select("id, child_name, balance, annual_interest_percent, avatar_url")
     .eq("parent_id", user.id);
 
-  const childIds = accounts?.map((a) => a.child_user_id) ?? [];
-  const { data: children } =
-    childIds.length > 0
+  const accountIds = accounts?.map((a) => a.id) ?? [];
+  const { data: invites } =
+    accountIds.length > 0
       ? await supabase
-          .from("profiles")
-          .select("id, full_name, email")
-          .in("id", childIds)
-      : { data: [] as { id: string; full_name: string | null; email: string }[] };
+          .from("child_invites")
+          .select("child_account_id, token")
+          .in("child_account_id", accountIds)
+      : { data: [] as { child_account_id: string; token: string }[] };
 
-  const byId = new Map(children?.map((c) => [c.id, c]) ?? []);
+  const tokenByAccountId = new Map(
+    invites?.map((i) => [i.child_account_id, i.token]) ?? []
+  );
 
   return (
-    <div className="flex flex-1 flex-col max-w-3xl mx-auto w-full px-4 py-8">
+    <div className="flex flex-1 flex-col max-w-5xl mx-auto w-full px-4 py-8">
       <header className="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold">לוח הורה</h1>
@@ -65,17 +67,18 @@ export default async function ParentPage() {
           </p>
         </div>
       ) : (
-        <ul className="space-y-6">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {accounts.map((acc) => {
-            const child = byId.get(acc.child_user_id);
+            const token = tokenByAccountId.get(acc.id);
             return (
               <li key={acc.id}>
                 <ParentChildCard
                   accountId={acc.id}
-                  childName={child?.full_name ?? null}
-                  childEmail={child?.email ?? ""}
+                  childName={acc.child_name ?? null}
                   balance={Number(acc.balance)}
                   annualInterestPercent={Number(acc.annual_interest_percent)}
+                  inviteToken={token ?? null}
+                  avatarUrl={acc.avatar_url ?? null}
                 />
               </li>
             );

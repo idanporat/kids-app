@@ -9,7 +9,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/login") || pathname.startsWith("/register");
   const isProtected =
     pathname.startsWith("/parent") ||
-    pathname.startsWith("/child") ||
     pathname.startsWith("/complete-profile");
 
   if (isProtected && !user) {

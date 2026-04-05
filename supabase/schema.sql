@@ -168,7 +168,7 @@ create policy "profiles_insert_self" on public.profiles
 
 drop policy if exists "profiles_update_self" on public.profiles;
 create policy "profiles_update_self" on public.profiles
-  for update using (auth.uid() = id);
+  for update using (auth.uid() = id or parent_id = auth.uid());
 
 drop policy if exists "child_accounts_select" on public.child_accounts;
 create policy "child_accounts_select" on public.child_accounts

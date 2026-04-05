@@ -31,22 +31,40 @@ export async function createChildInvite(
     return { ok: false, message: "רק הורה יכול להזמין ילד" };
   }
 
-  const { data, error } = await supabase
+  const pct = Number.isFinite(annualPercent) ? Math.max(0, annualPercent) : 0;
+  const name = childName.trim();
+
+  // Create the child account first
+  const { data: account, error: accError } = await supabase
+    .from("child_accounts")
+    .insert({
+      parent_id: user.id,
+      child_name: name,
+      annual_interest_percent: pct,
+    })
+    .select("id")
+    .single();
+
+  if (accError) {
+    return { ok: false, message: accError.message };
+  }
+
+  // Create the invite linked to the account
+  const { data: invite, error: invError } = await supabase
     .from("child_invites")
     .insert({
       parent_id: user.id,
-      child_name: childName.trim(),
-      annual_interest_percent: Number.isFinite(annualPercent)
-        ? Math.max(0, annualPercent)
-        : 0,
+      child_name: name,
+      annual_interest_percent: pct,
+      child_account_id: account.id,
     })
     .select("token")
     .single();
 
-  if (error) {
-    return { ok: false, message: error.message };
+  if (invError) {
+    return { ok: false, message: invError.message };
   }
 
   revalidatePath("/parent");
-  return { ok: true, token: data.token };
+  return { ok: true, token: invite.token };
 }
