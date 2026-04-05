@@ -36,7 +36,24 @@ export default async function JoinPage({ params }: Props) {
       .maybeSingle();
 
     if (profile?.role === "parent") {
-      redirect("/parent");
+      const link = `${process.env.NEXT_PUBLIC_SITE_URL || ""}/join/${token}`;
+      return (
+        <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-[var(--card)] p-8 shadow-sm text-center space-y-4">
+            <h1 className="text-2xl font-bold">קישור הזמנה לילד</h1>
+            <p className="text-slate-600 dark:text-slate-400">
+              הקישור הזה מיועד ל<span className="font-semibold">{invite.child_name}</span>. 
+              שתף אותו עם הילד כדי שיוכל להירשם ולהצטרף.
+            </p>
+            <div className="rounded-lg bg-slate-50 dark:bg-slate-800 p-3 text-sm break-all text-left" dir="ltr">
+              {link || `join/${token}`}
+            </div>
+            <a href="/parent" className="inline-block text-blue-600 dark:text-blue-400 font-medium text-sm">
+              ← חזרה ללוח ההורה
+            </a>
+          </div>
+        </div>
+      );
     }
     if (profile?.role === "child") {
       redirect("/child");
