@@ -227,7 +227,7 @@ export function ParentChildCard({
               אחוז שנתי: <span className="font-medium text-slate-800 dark:text-slate-200">{annualInterestPercent}%</span>
             </p>
             {inviteToken && (
-              <div className="mt-2">
+              <div className="mt-2 space-y-3">
                 <button
                   type="button"
                   onClick={copyLink}
@@ -235,6 +235,19 @@ export function ParentChildCard({
                 >
                   {copied ? "הקישור הועתק!" : "📋 העתק קישור לילד"}
                 </button>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/50">
+                  <h3 className="text-sm font-medium">התקדמות במשחקים</h3>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                    במסך הילד יש טאב &quot;משחקים&quot; בקישור ההזמנה. ההתקדמות נשמרת במכשיר של הילד בלבד
+                    (ללא העלאה לשרת), כך שההורה רואה כאן הסבר בלבד — לא נתונים בזמן אמת מהמכשיר של הילד.
+                  </p>
+                  <a
+                    href={`/join/${inviteToken}/games`}
+                    className="mt-3 inline-block text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                  >
+                    פתיחת בחירת משחקים (בדפדפן זה)
+                  </a>
+                </div>
               </div>
             )}
             <div className="mt-3">

@@ -34,3 +34,69 @@ body {
     system-ui,
     sans-serif;
 }
+
+/* Mini-games: rewards + feedback (CSS only) */
+@keyframes hero-fly-across {
+  0% {
+    transform: translate(120vw, 20vh) rotate(-12deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-120vw, -15vh) rotate(12deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.hero-fly {
+  animation: hero-fly-across 2s ease-in-out forwards;
+}
+
+@keyframes star-pop {
+  0% {
+    transform: rotate(calc(var(--i, 0) * 30deg)) translateY(0) scale(0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(calc(var(--i, 0) * 30deg)) translateY(-120px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.stars-burst {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+.star-particle {
+  position: absolute;
+  font-size: 2rem;
+  animation: star-pop 0.85s ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 0.03s);
+}
+
+@keyframes shake-soft {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+.shake-soft {
+  animation: shake-soft 0.35s ease-in-out;
+}
