@@ -38,15 +38,56 @@ export type SpeakItProgress = {
   wrongCount: number;
 };
 
+/** סטטיסטיקה אחידה למשחקי המודולים החדשים */
+export type ModuleProgress = {
+  roundsCompleted: number;
+  correctCount: number;
+  wrongCount: number;
+};
+
 export type AllGameProgress = {
   shapeHero: ShapeHeroProgress;
   powerMemory: PowerMemoryProgress;
   heroWords: HeroWordsProgress;
   categoryPick: CategoryPickProgress;
   speakIt: SpeakItProgress;
+  associations: ModuleProgress;
+  environments: ModuleProgress;
+  shapeMatch: ModuleProgress;
+  contextMatch: ModuleProgress;
+  actionMatch: ModuleProgress;
+  visualClosure: ModuleProgress;
+  opposites: ModuleProgress;
+  rhymes: ModuleProgress;
+  sequences: ModuleProgress;
+  counting: ModuleProgress;
+  phonetics: ModuleProgress;
+  soundId: ModuleProgress;
   recentMistakes: ProgressMistake[];
   updatedAt: string;
 };
+
+/** מיפוי מזהה משחק לשדה ב־AllGameProgress (למודולים החדשים) */
+export const MODULE_GAME_PROGRESS_KEYS: Partial<Record<GameId, keyof AllGameProgress>> = {
+  associations: "associations",
+  environments: "environments",
+  "shape-match": "shapeMatch",
+  "context-match": "contextMatch",
+  "action-match": "actionMatch",
+  "visual-closure": "visualClosure",
+  opposites: "opposites",
+  rhymes: "rhymes",
+  sequences: "sequences",
+  counting: "counting",
+  phonetics: "phonetics",
+  "sound-id": "soundId",
+};
+
+const moduleDefault = (): ModuleProgress => ({
+  roundsCompleted: 0,
+  correctCount: 0,
+  wrongCount: 0,
+});
 
 const defaultProgress = (): AllGameProgress => ({
   shapeHero: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
@@ -54,6 +95,18 @@ const defaultProgress = (): AllGameProgress => ({
   heroWords: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
   categoryPick: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
   speakIt: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
+  associations: moduleDefault(),
+  environments: moduleDefault(),
+  shapeMatch: moduleDefault(),
+  contextMatch: moduleDefault(),
+  actionMatch: moduleDefault(),
+  visualClosure: moduleDefault(),
+  opposites: moduleDefault(),
+  rhymes: moduleDefault(),
+  sequences: moduleDefault(),
+  counting: moduleDefault(),
+  phonetics: moduleDefault(),
+  soundId: moduleDefault(),
   recentMistakes: [],
   updatedAt: new Date().toISOString(),
 });
@@ -114,6 +167,66 @@ function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined)
       roundsCompleted: parsed.speakIt?.roundsCompleted ?? base.speakIt.roundsCompleted,
       correctCount: parsed.speakIt?.correctCount ?? base.speakIt.correctCount,
       wrongCount: parsed.speakIt?.wrongCount ?? base.speakIt.wrongCount,
+    },
+    associations: {
+      roundsCompleted: parsed.associations?.roundsCompleted ?? base.associations.roundsCompleted,
+      correctCount: parsed.associations?.correctCount ?? base.associations.correctCount,
+      wrongCount: parsed.associations?.wrongCount ?? base.associations.wrongCount,
+    },
+    environments: {
+      roundsCompleted: parsed.environments?.roundsCompleted ?? base.environments.roundsCompleted,
+      correctCount: parsed.environments?.correctCount ?? base.environments.correctCount,
+      wrongCount: parsed.environments?.wrongCount ?? base.environments.wrongCount,
+    },
+    shapeMatch: {
+      roundsCompleted: parsed.shapeMatch?.roundsCompleted ?? base.shapeMatch.roundsCompleted,
+      correctCount: parsed.shapeMatch?.correctCount ?? base.shapeMatch.correctCount,
+      wrongCount: parsed.shapeMatch?.wrongCount ?? base.shapeMatch.wrongCount,
+    },
+    contextMatch: {
+      roundsCompleted: parsed.contextMatch?.roundsCompleted ?? base.contextMatch.roundsCompleted,
+      correctCount: parsed.contextMatch?.correctCount ?? base.contextMatch.correctCount,
+      wrongCount: parsed.contextMatch?.wrongCount ?? base.contextMatch.wrongCount,
+    },
+    actionMatch: {
+      roundsCompleted: parsed.actionMatch?.roundsCompleted ?? base.actionMatch.roundsCompleted,
+      correctCount: parsed.actionMatch?.correctCount ?? base.actionMatch.correctCount,
+      wrongCount: parsed.actionMatch?.wrongCount ?? base.actionMatch.wrongCount,
+    },
+    visualClosure: {
+      roundsCompleted: parsed.visualClosure?.roundsCompleted ?? base.visualClosure.roundsCompleted,
+      correctCount: parsed.visualClosure?.correctCount ?? base.visualClosure.correctCount,
+      wrongCount: parsed.visualClosure?.wrongCount ?? base.visualClosure.wrongCount,
+    },
+    opposites: {
+      roundsCompleted: parsed.opposites?.roundsCompleted ?? base.opposites.roundsCompleted,
+      correctCount: parsed.opposites?.correctCount ?? base.opposites.correctCount,
+      wrongCount: parsed.opposites?.wrongCount ?? base.opposites.wrongCount,
+    },
+    rhymes: {
+      roundsCompleted: parsed.rhymes?.roundsCompleted ?? base.rhymes.roundsCompleted,
+      correctCount: parsed.rhymes?.correctCount ?? base.rhymes.correctCount,
+      wrongCount: parsed.rhymes?.wrongCount ?? base.rhymes.wrongCount,
+    },
+    sequences: {
+      roundsCompleted: parsed.sequences?.roundsCompleted ?? base.sequences.roundsCompleted,
+      correctCount: parsed.sequences?.correctCount ?? base.sequences.correctCount,
+      wrongCount: parsed.sequences?.wrongCount ?? base.sequences.wrongCount,
+    },
+    counting: {
+      roundsCompleted: parsed.counting?.roundsCompleted ?? base.counting.roundsCompleted,
+      correctCount: parsed.counting?.correctCount ?? base.counting.correctCount,
+      wrongCount: parsed.counting?.wrongCount ?? base.counting.wrongCount,
+    },
+    phonetics: {
+      roundsCompleted: parsed.phonetics?.roundsCompleted ?? base.phonetics.roundsCompleted,
+      correctCount: parsed.phonetics?.correctCount ?? base.phonetics.correctCount,
+      wrongCount: parsed.phonetics?.wrongCount ?? base.phonetics.wrongCount,
+    },
+    soundId: {
+      roundsCompleted: parsed.soundId?.roundsCompleted ?? base.soundId.roundsCompleted,
+      correctCount: parsed.soundId?.correctCount ?? base.soundId.correctCount,
+      wrongCount: parsed.soundId?.wrongCount ?? base.soundId.wrongCount,
     },
     recentMistakes: normMistakes(parsed.recentMistakes),
   };
@@ -190,6 +303,18 @@ export function saveProgress(token: string, next: Partial<AllGameProgress>) {
     heroWords: { ...prev.heroWords, ...next.heroWords },
     categoryPick: { ...prev.categoryPick, ...next.categoryPick },
     speakIt: { ...prev.speakIt, ...next.speakIt },
+    associations: { ...prev.associations, ...next.associations },
+    environments: { ...prev.environments, ...next.environments },
+    shapeMatch: { ...prev.shapeMatch, ...next.shapeMatch },
+    contextMatch: { ...prev.contextMatch, ...next.contextMatch },
+    actionMatch: { ...prev.actionMatch, ...next.actionMatch },
+    visualClosure: { ...prev.visualClosure, ...next.visualClosure },
+    opposites: { ...prev.opposites, ...next.opposites },
+    rhymes: { ...prev.rhymes, ...next.rhymes },
+    sequences: { ...prev.sequences, ...next.sequences },
+    counting: { ...prev.counting, ...next.counting },
+    phonetics: { ...prev.phonetics, ...next.phonetics },
+    soundId: { ...prev.soundId, ...next.soundId },
     recentMistakes: next.recentMistakes ?? prev.recentMistakes,
     updatedAt: new Date().toISOString(),
   };
@@ -251,8 +376,23 @@ export function recordGameAttempt(
       speakIt = { ...prev.speakIt, correctCount: correct, wrongCount: wrong };
       break;
     }
-    default:
+    default: {
+      const mk = MODULE_GAME_PROGRESS_KEYS[game];
+      if (!mk) return;
+      const cur = prev[mk] as ModuleProgress;
+      const { correct, wrong } = bump(cur.correctCount, cur.wrongCount);
+      let recentMistakes = prev.recentMistakes;
+      if (outcome === "wrong" && d) {
+        recentMistakes = [...prev.recentMistakes, { game, at: new Date().toISOString(), detail: d }].slice(
+          -MISTAKES_CAP
+        );
+      }
+      saveProgress(token, {
+        [mk]: { ...cur, correctCount: correct, wrongCount: wrong },
+        recentMistakes,
+      });
       return;
+    }
   }
 
   let recentMistakes = prev.recentMistakes;
@@ -306,14 +446,38 @@ export function bumpSpeakIt(token: string) {
   });
 }
 
+export function bumpGameModuleRound(token: string, gameId: GameId) {
+  const mk = MODULE_GAME_PROGRESS_KEYS[gameId];
+  if (!mk) return;
+  const p = loadProgress(token);
+  const cur = p[mk] as ModuleProgress;
+  saveProgress(token, {
+    [mk]: { ...cur, roundsCompleted: cur.roundsCompleted + 1 },
+  });
+}
+
 /** One-line summary for compact display (parent dashboard / copy). */
 export function formatProgressSummary(p: AllGameProgress): string {
+  const moduleRounds =
+    p.associations.roundsCompleted +
+    p.environments.roundsCompleted +
+    p.shapeMatch.roundsCompleted +
+    p.contextMatch.roundsCompleted +
+    p.actionMatch.roundsCompleted +
+    p.visualClosure.roundsCompleted +
+    p.opposites.roundsCompleted +
+    p.rhymes.roundsCompleted +
+    p.sequences.roundsCompleted +
+    p.counting.roundsCompleted +
+    p.phonetics.roundsCompleted +
+    p.soundId.roundsCompleted;
   return [
     `גיבור הצורות: ${p.shapeHero.roundsCompleted} סיבובים`,
     `זיכרון הכוחות: עד ${p.powerMemory.maxPairs} זוגות`,
     `מילים: ${p.heroWords.roundsCompleted} סיבובים`,
     `מה שייך: ${p.categoryPick.roundsCompleted} סיבובים`,
     `אומרים בקול: ${p.speakIt.roundsCompleted} סיבובים`,
+    `משחקי מודולים: ${moduleRounds} סיבובים`,
   ].join(" · ");
 }
 
@@ -322,7 +486,19 @@ export function totalCompletedRounds(p: AllGameProgress): number {
     p.shapeHero.roundsCompleted +
     p.heroWords.roundsCompleted +
     p.categoryPick.roundsCompleted +
-    p.speakIt.roundsCompleted
+    p.speakIt.roundsCompleted +
+    p.associations.roundsCompleted +
+    p.environments.roundsCompleted +
+    p.shapeMatch.roundsCompleted +
+    p.contextMatch.roundsCompleted +
+    p.actionMatch.roundsCompleted +
+    p.visualClosure.roundsCompleted +
+    p.opposites.roundsCompleted +
+    p.rhymes.roundsCompleted +
+    p.sequences.roundsCompleted +
+    p.counting.roundsCompleted +
+    p.phonetics.roundsCompleted +
+    p.soundId.roundsCompleted
   );
 }
 
@@ -347,6 +523,30 @@ export function gameLabel(id: GameId): string {
       return "מה שייך?";
     case "speak-it":
       return "אומרים בקול";
+    case "associations":
+      return "התאמות";
+    case "environments":
+      return "איפה הוא גר?";
+    case "shape-match":
+      return "צורה וחפץ";
+    case "context-match":
+      return "מתאים למקום";
+    case "action-match":
+      return "מה עושים שם?";
+    case "visual-closure":
+      return "השלם את התמונה";
+    case "opposites":
+      return "הפכים";
+    case "rhymes":
+      return "חרוזים";
+    case "sequences":
+      return "מה חסר בסדרה?";
+    case "counting":
+      return "ספירה";
+    case "phonetics":
+      return "אות ראשונה";
+    case "sound-id":
+      return "מי משמיע?";
     default:
       return id;
   }

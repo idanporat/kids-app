@@ -6,6 +6,18 @@ export const GAME_IDS = [
   "hero-words",
   "category-pick",
   "speak-it",
+  "associations",
+  "environments",
+  "shape-match",
+  "context-match",
+  "action-match",
+  "visual-closure",
+  "opposites",
+  "rhymes",
+  "sequences",
+  "counting",
+  "phonetics",
+  "sound-id",
 ] as const;
 export type GameId = (typeof GAME_IDS)[number];
 
@@ -44,6 +56,66 @@ export const GAME_LIST: GameMeta[] = [
     id: "speak-it",
     title: "אומרים בקול",
     emoji: "🎤",
+  },
+  {
+    id: "associations",
+    title: "התאמות",
+    emoji: "🔗",
+  },
+  {
+    id: "environments",
+    title: "איפה הוא גר?",
+    emoji: "🌍",
+  },
+  {
+    id: "shape-match",
+    title: "צורה וחפץ",
+    emoji: "🔺",
+  },
+  {
+    id: "context-match",
+    title: "מתאים למקום",
+    emoji: "🍴",
+  },
+  {
+    id: "action-match",
+    title: "מה עושים שם?",
+    emoji: "🏃",
+  },
+  {
+    id: "visual-closure",
+    title: "השלם את התמונה",
+    emoji: "🧩",
+  },
+  {
+    id: "opposites",
+    title: "הפכים",
+    emoji: "↔️",
+  },
+  {
+    id: "rhymes",
+    title: "חרוזים",
+    emoji: "🎵",
+  },
+  {
+    id: "sequences",
+    title: "מה חסר בסדרה?",
+    emoji: "🔢",
+  },
+  {
+    id: "counting",
+    title: "ספירה",
+    emoji: "🔟",
+  },
+  {
+    id: "phonetics",
+    title: "אות ראשונה",
+    emoji: "🔤",
+  },
+  {
+    id: "sound-id",
+    title: "מי משמיע?",
+    emoji: "🔊",
   },
 ];
 
@@ -458,3 +530,31 @@ export const SPEAK_ROUNDS: SpeakRound[] = [
 
 /** Hero / power symbols for memory (pairs are two identical emojis) */
 export const MEMORY_SYMBOLS = ["🦸", "🦹", "🛡️", "⚡", "❤️", "🌟", "🔥", "✨"] as const;
+
+export {
+  ACTION_MATCH_ROUNDS,
+  ASSOCIATION_ROUNDS,
+  CONTEXT_MATCH_ROUNDS,
+  COUNTING_ROUNDS,
+  ENVIRONMENT_ROUNDS,
+  OPPOSITE_ROUNDS,
+  PHONETICS_ROUNDS,
+  RHYME_ROUNDS,
+  SEQUENCE_ROUNDS,
+  SHAPE_MATCH_ROUNDS,
+  SOUND_ID_ROUNDS,
+  VISUAL_CLOSURE_ROUNDS,
+  environmentMeta,
+  type ActionMatchRound,
+  type AssociationRound,
+  type ContextMatchRound,
+  type CountingRound,
+  type EnvironmentRound,
+  type OppositeRound,
+  type PhoneticsRound,
+  type RhymeRound,
+  type SequenceRound,
+  type ShapeMatchRound,
+  type SoundIdRound,
+  type VisualClosureRound,
+} from "./game-modules-data";
