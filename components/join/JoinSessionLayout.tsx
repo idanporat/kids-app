@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { GameProgressSyncMount } from "@/components/games/GameProgressSyncMount";
+
 type Props = {
   token: string;
   childName: string | null;
@@ -66,6 +68,7 @@ export function JoinSessionLayout({ token, childName, avatarUrl, children }: Pro
           </Link>
         </nav>
       </header>
+      <GameProgressSyncMount token={token} />
       {children}
     </div>
   );

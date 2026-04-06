@@ -58,17 +58,36 @@ function key(token: string) {
   return `kids-game-progress:${token}`;
 }
 
+async function pushViaSupabaseRpc(token: string, merged: AllGameProgress) {
+  const supabase = createClient();
+  const { error } = await supabase.rpc("sync_game_progress_by_token", {
+    p_token: token,
+    p_data: merged,
+  });
+  if (error) console.warn("[game progress sync rpc]", error.message);
+}
+
 async function pushProgressToServer(token: string, merged: AllGameProgress) {
   try {
-    const supabase = createClient();
-    const { error } = await supabase.rpc("sync_game_progress_by_token", {
-      p_token: token,
-      p_data: merged,
+    const res = await fetch("/api/game-progress/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, data: merged }),
     });
-    if (error) console.warn("[game progress sync]", error.message);
+    if (res.ok) return;
+    const errBody = await res.json().catch(() => ({}));
+    console.warn("[game progress sync api]", res.status, errBody);
+    await pushViaSupabaseRpc(token, merged);
   } catch (e) {
-    console.warn("[game progress sync]", e);
+    console.warn("[game progress sync api]", e);
+    await pushViaSupabaseRpc(token, merged);
   }
+}
+
+/** Push current localStorage snapshot (e.g. on entering /join/:token/games). */
+export async function flushProgressToServer(token: string) {
+  const merged = loadProgress(token);
+  await pushProgressToServer(token, merged);
 }
 
 export function loadProgress(token: string): AllGameProgress {
