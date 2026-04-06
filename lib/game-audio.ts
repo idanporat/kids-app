@@ -71,13 +71,51 @@ export function speakHebrew(text: string): Promise<void> {
       return;
     }
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "he-IL";
-    u.rate = 0.92;
-    u.pitch = 1;
-    u.onend = () => resolve();
-    u.onerror = () => resolve();
-    window.speechSynthesis.speak(u);
+
+    const trySpeak = () => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "he-IL";
+      u.rate = 0.92;
+      u.pitch = 1;
+
+      // Try to find a Hebrew voice explicitly (Chrome mobile needs this)
+      const voices = window.speechSynthesis.getVoices();
+      const heVoice = voices.find(
+        (v) => v.lang === "he-IL" || v.lang === "he" || v.lang.startsWith("he")
+      );
+      if (heVoice) u.voice = heVoice;
+
+      u.onend = () => resolve();
+      u.onerror = () => resolve();
+      window.speechSynthesis.speak(u);
+
+      // Chrome mobile sometimes stops mid-speech; keep it alive
+      const keepAlive = setInterval(() => {
+        if (!window.speechSynthesis.speaking) {
+          clearInterval(keepAlive);
+        } else {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }, 5000);
+      u.onend = () => { clearInterval(keepAlive); resolve(); };
+      u.onerror = () => { clearInterval(keepAlive); resolve(); };
+    };
+
+    // Chrome loads voices asynchronously — wait for them if empty
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.onvoiceschanged = null;
+        trySpeak();
+      };
+      // Fallback if onvoiceschanged never fires
+      setTimeout(() => {
+        window.speechSynthesis.onvoiceschanged = null;
+        trySpeak();
+      }, 300);
+    } else {
+      trySpeak();
+    }
   });
 }
 
