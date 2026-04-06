@@ -1,6 +1,7 @@
 "use client";
 
 import type { GameId } from "@/lib/game-data";
+import { createClient } from "@/utils/supabase/client";
 
 export type ShapeHeroProgress = { roundsCompleted: number };
 export type PowerMemoryProgress = { maxPairs: number };
@@ -26,8 +27,48 @@ const defaultProgress = (): AllGameProgress => ({
   updatedAt: new Date().toISOString(),
 });
 
+function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined): AllGameProgress {
+  const base = defaultProgress();
+  if (!parsed || typeof parsed !== "object") return base;
+  return {
+    ...base,
+    ...parsed,
+    shapeHero: { ...base.shapeHero, ...parsed.shapeHero },
+    powerMemory: { ...base.powerMemory, ...parsed.powerMemory },
+    heroWords: { ...base.heroWords, ...parsed.heroWords },
+    categoryPick: { ...base.categoryPick, ...parsed.categoryPick },
+    speakIt: { ...base.speakIt, ...parsed.speakIt },
+  };
+}
+
+/** Normalize JSON from localStorage or Supabase `child_game_progress.data`. */
+export function parseGameProgressFromJson(raw: unknown): AllGameProgress {
+  if (raw == null) return defaultProgress();
+  if (typeof raw === "string") {
+    try {
+      return mergeProgressPatch(JSON.parse(raw) as Partial<AllGameProgress>);
+    } catch {
+      return defaultProgress();
+    }
+  }
+  return mergeProgressPatch(raw as Partial<AllGameProgress>);
+}
+
 function key(token: string) {
   return `kids-game-progress:${token}`;
+}
+
+async function pushProgressToServer(token: string, merged: AllGameProgress) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase.rpc("sync_game_progress_by_token", {
+      p_token: token,
+      p_data: merged,
+    });
+    if (error) console.warn("[game progress sync]", error.message);
+  } catch (e) {
+    console.warn("[game progress sync]", e);
+  }
 }
 
 export function loadProgress(token: string): AllGameProgress {
@@ -35,16 +76,7 @@ export function loadProgress(token: string): AllGameProgress {
   try {
     const raw = localStorage.getItem(key(token));
     if (!raw) return defaultProgress();
-    const parsed = JSON.parse(raw) as Partial<AllGameProgress>;
-    return {
-      ...defaultProgress(),
-      ...parsed,
-      shapeHero: { ...defaultProgress().shapeHero, ...parsed.shapeHero },
-      powerMemory: { ...defaultProgress().powerMemory, ...parsed.powerMemory },
-      heroWords: { ...defaultProgress().heroWords, ...parsed.heroWords },
-      categoryPick: { ...defaultProgress().categoryPick, ...parsed.categoryPick },
-      speakIt: { ...defaultProgress().speakIt, ...parsed.speakIt },
-    };
+    return mergeProgressPatch(JSON.parse(raw) as Partial<AllGameProgress>);
   } catch {
     return defaultProgress();
   }
@@ -64,6 +96,7 @@ export function saveProgress(token: string, next: Partial<AllGameProgress>) {
     updatedAt: new Date().toISOString(),
   };
   localStorage.setItem(key(token), JSON.stringify(merged));
+  void pushProgressToServer(token, merged);
 }
 
 export function bumpShapeHero(token: string) {
@@ -100,7 +133,7 @@ export function bumpSpeakIt(token: string) {
   });
 }
 
-/** Summary for parent-facing copy (local device only). */
+/** One-line summary for compact display (parent dashboard / copy). */
 export function formatProgressSummary(p: AllGameProgress): string {
   return [
     `גיבור הצורות: ${p.shapeHero.roundsCompleted} סיבובים`,
@@ -109,6 +142,24 @@ export function formatProgressSummary(p: AllGameProgress): string {
     `מה שייך: ${p.categoryPick.roundsCompleted} סיבובים`,
     `אומרים בקול: ${p.speakIt.roundsCompleted} סיבובים`,
   ].join(" · ");
+}
+
+export function totalCompletedRounds(p: AllGameProgress): number {
+  return (
+    p.shapeHero.roundsCompleted +
+    p.heroWords.roundsCompleted +
+    p.categoryPick.roundsCompleted +
+    p.speakIt.roundsCompleted
+  );
+}
+
+export function formatProgressUpdatedAt(iso: string): string {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short" });
+  } catch {
+    return "";
+  }
 }
 
 export function gameLabel(id: GameId): string {

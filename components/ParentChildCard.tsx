@@ -9,7 +9,17 @@ import { deleteChildAccount } from "@/app/actions/delete-child";
 import { createDeposit } from "@/app/actions/deposits";
 import { updateAnnualInterest } from "@/app/actions/interest";
 import { formatIls } from "@/lib/format";
+import {
+  formatProgressUpdatedAt,
+  parseGameProgressFromJson,
+  totalCompletedRounds,
+} from "@/lib/game-progress";
 import { createClient } from "@/utils/supabase/client";
+
+type GameProgressSnapshot = {
+  data: unknown;
+  updatedAt: string;
+};
 
 type Props = {
   accountId: string;
@@ -18,6 +28,8 @@ type Props = {
   annualInterestPercent: number;
   inviteToken: string | null;
   avatarUrl: string | null;
+  /** Synced when the child plays with the invite link (Supabase). */
+  gameProgressSnapshot: GameProgressSnapshot | null;
 };
 
 export function ParentChildCard({
@@ -27,6 +39,7 @@ export function ParentChildCard({
   annualInterestPercent,
   inviteToken,
   avatarUrl,
+  gameProgressSnapshot,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -226,30 +239,36 @@ export function ParentChildCard({
             <p className="mt-2 text-sm text-slate-500">
               אחוז שנתי: <span className="font-medium text-slate-800 dark:text-slate-200">{annualInterestPercent}%</span>
             </p>
-            {inviteToken && (
-              <div className="mt-2 space-y-3">
-                <button
-                  type="button"
-                  onClick={copyLink}
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  {copied ? "הקישור הועתק!" : "📋 העתק קישור לילד"}
-                </button>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/50">
-                  <h3 className="text-sm font-medium">התקדמות במשחקים</h3>
+            <div className="mt-2 space-y-3">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/50">
+                <h3 className="text-sm font-medium">התקדמות במשחקים</h3>
+                {gameProgressSnapshot ? (
+                  <ChildGameProgressPanel snapshot={gameProgressSnapshot} />
+                ) : (
                   <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    במסך הילד יש טאב &quot;משחקים&quot; בקישור ההזמנה. ההתקדמות נשמרת במכשיר של הילד בלבד
-                    (ללא העלאה לשרת), כך שההורה רואה כאן הסבר בלבד — לא נתונים בזמן אמת מהמכשיר של הילד.
+                    עדיין אין נתונים מהמכשיר של הילד. הנתונים מסתנכרנים לשרת כשהילד משחק דרך קישור ההזמנה
+                    (גם בלי שינוי בדפדפן זה).
                   </p>
+                )}
+              </div>
+              {inviteToken && (
+                <>
+                  <button
+                    type="button"
+                    onClick={copyLink}
+                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    {copied ? "הקישור הועתק!" : "📋 העתק קישור לילד"}
+                  </button>
                   <a
                     href={`/join/${inviteToken}/games`}
-                    className="mt-3 inline-block text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                    className="block text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
                   >
                     פתיחת בחירת משחקים (בדפדפן זה)
                   </a>
-                </div>
-              </div>
-            )}
+                </>
+              )}
+            </div>
             <div className="mt-3">
               {confirmDelete ? (
                 <div className="flex items-center gap-2">
@@ -357,5 +376,42 @@ export function ParentChildCard({
         </div>
       )}
     </article>
+  );
+}
+
+function ChildGameProgressPanel({ snapshot }: { snapshot: GameProgressSnapshot }) {
+  const p = parseGameProgressFromJson(snapshot.data);
+  const total = totalCompletedRounds(p);
+  return (
+    <div className="mt-3 space-y-2 text-sm">
+      <p className="font-semibold text-slate-800 dark:text-slate-100">
+        סה״כ סיבובים שהושלמו (ארבעת המשחקים): {total}
+      </p>
+      <ul className="grid gap-1.5 text-slate-700 dark:text-slate-300">
+        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
+          <span>גיבור הצורות</span>
+          <span className="font-medium tabular-nums">{p.shapeHero.roundsCompleted} סיבובים</span>
+        </li>
+        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
+          <span>זיכרון הכוחות</span>
+          <span className="font-medium tabular-nums">עד {p.powerMemory.maxPairs} זוגות</span>
+        </li>
+        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
+          <span>מילים של גיבורים</span>
+          <span className="font-medium tabular-nums">{p.heroWords.roundsCompleted} סיבובים</span>
+        </li>
+        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
+          <span>מה שייך?</span>
+          <span className="font-medium tabular-nums">{p.categoryPick.roundsCompleted} סיבובים</span>
+        </li>
+        <li className="flex justify-between gap-2">
+          <span>אומרים בקול</span>
+          <span className="font-medium tabular-nums">{p.speakIt.roundsCompleted} סיבובים</span>
+        </li>
+      </ul>
+      <p className="text-xs text-slate-500 dark:text-slate-400">
+        עודכן בשרת: {formatProgressUpdatedAt(snapshot.updatedAt)}
+      </p>
+    </div>
   );
 }

@@ -39,8 +39,23 @@ export default async function ParentPage() {
           .in("child_account_id", accountIds)
       : { data: [] as { child_account_id: string; token: string }[] };
 
+  const { data: progressRows } =
+    accountIds.length > 0
+      ? await supabase
+          .from("child_game_progress")
+          .select("child_account_id, data, updated_at")
+          .in("child_account_id", accountIds)
+      : { data: [] as { child_account_id: string; data: unknown; updated_at: string }[] };
+
   const tokenByAccountId = new Map(
     invites?.map((i) => [i.child_account_id, i.token]) ?? []
+  );
+
+  const progressByAccountId = new Map(
+    progressRows?.map((r) => [
+      r.child_account_id,
+      { data: r.data, updatedAt: r.updated_at },
+    ]) ?? []
   );
 
   return (
@@ -79,6 +94,7 @@ export default async function ParentPage() {
                   annualInterestPercent={Number(acc.annual_interest_percent)}
                   inviteToken={token ?? null}
                   avatarUrl={acc.avatar_url ?? null}
+                  gameProgressSnapshot={progressByAccountId.get(acc.id) ?? null}
                 />
               </li>
             );
