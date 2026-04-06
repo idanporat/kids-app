@@ -41,13 +41,13 @@ function OppositesInner({
   function replay() {
     if (busy) return;
     resumeAudioContext();
-    void speakHebrew(`בחרו את ההפך של ${round.prompt}`);
+    void speakHebrew("בחרו את ההפך של מה שמוצג בתמונה");
   }
 
   function handlePick(file: string) {
     if (busy) return;
     if (file !== round.correct) {
-      recordGameAttempt(token, "opposites", "wrong", `הפך של «${round.prompt}» — בחירה לא נכונה`);
+      recordGameAttempt(token, "opposites", "wrong", `הפך של תמונת הגירוי — בחירה לא נכונה`);
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(35);
       return;
@@ -70,20 +70,26 @@ function OppositesInner({
   return (
     <div className="flex flex-col items-center gap-8 px-2">
       <div className="flex flex-col items-center gap-4">
-        <p className="text-center text-2xl font-bold text-slate-800 dark:text-slate-100">מה ההפך?</p>
         <button
           type="button"
           onClick={replay}
           disabled={busy}
           className="inline-flex min-h-[56px] min-w-[56px] items-center justify-center rounded-full border-4 border-emerald-400 bg-emerald-100 px-6 text-4xl shadow-md transition active:scale-95 disabled:opacity-60 dark:bg-emerald-950/50"
-          aria-label="השמע שוב"
+          aria-label="השמע הוראות"
         >
           🔊
         </button>
       </div>
 
-      <div className="rounded-3xl border-4 border-indigo-200 bg-indigo-50/80 px-12 py-8 dark:border-indigo-700 dark:bg-indigo-950/30">
-        <p className="text-center text-5xl font-bold">{round.prompt}</p>
+      <div className="rounded-3xl border-4 border-indigo-200 bg-indigo-50/80 px-10 py-8 dark:border-indigo-700 dark:bg-indigo-950/30">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={twemojiUrl(round.promptImage)}
+          alt=""
+          width={140}
+          height={140}
+          className="mx-auto h-[140px] w-[140px] object-contain"
+        />
       </div>
 
       <div className="grid w-full max-w-lg grid-cols-3 gap-4">

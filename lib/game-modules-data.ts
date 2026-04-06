@@ -97,85 +97,75 @@ export const ENVIRONMENT_ROUNDS: EnvironmentRound[] = [
   { itemLabel: "מנורה", itemFile: "1f4a1.png", correctEnv: "home", envs: ["home", "land", "sea"] },
 ];
 
-/** G3 — צורה לחפץ */
+/** G3 — צורה לחפץ (התאמה ויזואלית: משולש/עיגול/ריבוע/כוכב/לב — בלי טקסט במסך) */
 export type ShapeMatchRound = {
-  shapeName: string;
   shapeFile: string;
   correct: string;
   options: [string, string, string];
 };
 
 export const SHAPE_MATCH_ROUNDS: ShapeMatchRound[] = [
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f355.png", options: ["1f355.png", "1f35e.png", "1f36a.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1f34e.png", options: ["1f34e.png", "1f34c.png", "1f34a.png"] },
-  { shapeName: "ריבוע", shapeFile: "1f7e6.png", correct: "1f4f0.png", options: ["1f4f0.png", "1f4d5.png", "1f4da.png"] },
-  { shapeName: "כוכב", shapeFile: "2b50.png", correct: "1f31f.png", options: ["1f31f.png", "2728.png", "1f320.png"] },
-  { shapeName: "לב", shapeFile: "1f496.png", correct: "1f495.png", options: ["1f495.png", "1f48c.png", "1f339.png"] },
-  { shapeName: "עיגול", shapeFile: "26ab.png", correct: "1f35e.png", options: ["1f35e.png", "1f956.png", "1f35d.png"] },
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f384.png", options: ["1f384.png", "1f332.png", "1f333.png"] },
-  { shapeName: "ריבוע", shapeFile: "1f7e6.png", correct: "1f4f1.png", options: ["1f4f1.png", "1f4bb.png", "1f4f2.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1f6e1.png", options: ["1f6e1.png", "1f3c0.png", "26bd.png"] },
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f3db.png", options: ["1f3db.png", "1f3d7.png", "1f3ed.png"] },
-  { shapeName: "כוכב", shapeFile: "2b50.png", correct: "1f31f.png", options: ["1f31f.png", "2b50.png", "1f320.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1f95e.png", options: ["1f95e.png", "1f373.png", "1f372.png"] },
-  { shapeName: "ריבוע", shapeFile: "1f7e6.png", correct: "1f4f0.png", options: ["1f4f0.png", "1f4d1.png", "1f4c4.png"] },
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f3c9.png", options: ["1f3c9.png", "26bd.png", "1f3c0.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1f37a.png", options: ["1f37a.png", "1f377.png", "1f378.png"] },
-  { shapeName: "לב", shapeFile: "1f496.png", correct: "1f490.png", options: ["1f490.png", "1f33c.png", "1f339.png"] },
-  { shapeName: "עיגול", shapeFile: "26ab.png", correct: "1f36e.png", options: ["1f36e.png", "1f36d.png", "1f36c.png"] },
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f3d4.png", options: ["1f3d4.png", "1f3de.png", "1f3d6.png"] },
-  { shapeName: "ריבוע", shapeFile: "1f7e6.png", correct: "1f4f2.png", options: ["1f4f2.png", "1f4f1.png", "260e.png"] },
-  { shapeName: "כוכב", shapeFile: "2b50.png", correct: "2728.png", options: ["2728.png", "1f4a1.png", "1f526.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1f34d.png", options: ["1f34d.png", "1f34b.png", "1f34a.png"] },
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f3c5.png", options: ["1f3c5.png", "1f396.png", "1f947.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1fbe1.png", options: ["1fbe1.png", "1f9c0.png", "1f95a.png"] },
-  { shapeName: "ריבוע", shapeFile: "1f7e6.png", correct: "1f9f0.png", options: ["1f9f0.png", "1f4bd.png", "1f4bf.png"] },
-  { shapeName: "לב", shapeFile: "1f496.png", correct: "1f48b.png", options: ["1f48b.png", "1f444.png", "1f445.png"] },
-  { shapeName: "עיגול", shapeFile: "26ab.png", correct: "1f961.png", options: ["1f961.png", "1f35c.png", "1f35d.png"] },
-  { shapeName: "משולש", shapeFile: "1f53a.png", correct: "1f3f4.png", options: ["1f3f4.png", "1f6a9.png", "1f3c1.png"] },
-  { shapeName: "כוכב", shapeFile: "2b50.png", correct: "1f320.png", options: ["1f320.png", "1f52d.png", "1f52c.png"] },
-  { shapeName: "עיגול", shapeFile: "26aa.png", correct: "1f950.png", options: ["1f950.png", "1f32e.png", "1f354.png"] },
-  { shapeName: "ריבוע", shapeFile: "1f7e6.png", correct: "1f4f0.png", options: ["1f4f0.png", "1f392.png", "1f45c.png"] },
+  { shapeFile: "1f53a.png", correct: "1f355.png", options: ["1f355.png", "1f34e.png", "26bd.png"] },
+  { shapeFile: "1f53a.png", correct: "1f3d4.png", options: ["1f3d4.png", "1f3e0.png", "1f4f0.png"] },
+  { shapeFile: "1f53a.png", correct: "1f384.png", options: ["1f384.png", "1f332.png", "1f333.png"] },
+  { shapeFile: "1f53a.png", correct: "1f6a8.png", options: ["1f6a8.png", "1f4f1.png", "1f34e.png"] },
+  { shapeFile: "26aa.png", correct: "1f34e.png", options: ["1f34e.png", "1f34c.png", "1f355.png"] },
+  { shapeFile: "26aa.png", correct: "26bd.png", options: ["26bd.png", "1f3c0.png", "1f3be.png"] },
+  { shapeFile: "26ab.png", correct: "1f35e.png", options: ["1f35e.png", "1f956.png", "1f355.png"] },
+  { shapeFile: "26aa.png", correct: "1f36a.png", options: ["1f36a.png", "1f355.png", "1f4d5.png"] },
+  { shapeFile: "26aa.png", correct: "1f9c3.png", options: ["1f9c3.png", "1f34b.png", "1f355.png"] },
+  { shapeFile: "26aa.png", correct: "1f37a.png", options: ["1f37a.png", "1f4d6.png", "1f355.png"] },
+  { shapeFile: "26ab.png", correct: "1f961.png", options: ["1f961.png", "1f35c.png", "1f355.png"] },
+  { shapeFile: "26aa.png", correct: "1f34a.png", options: ["1f34a.png", "1f34c.png", "1f355.png"] },
+  { shapeFile: "1f7e6.png", correct: "1f4f0.png", options: ["1f4f0.png", "1f4d5.png", "1f4da.png"] },
+  { shapeFile: "1f7e6.png", correct: "1f4f1.png", options: ["1f4f1.png", "1f4bb.png", "1f4f2.png"] },
+  { shapeFile: "1f7e6.png", correct: "1f9f0.png", options: ["1f9f0.png", "1f4bd.png", "1f4bf.png"] },
+  { shapeFile: "1f7e6.png", correct: "1f4f2.png", options: ["1f4f2.png", "1f4f1.png", "260e.png"] },
+  { shapeFile: "2b50.png", correct: "1f31f.png", options: ["1f31f.png", "2728.png", "1f320.png"] },
+  { shapeFile: "2b50.png", correct: "1f320.png", options: ["1f320.png", "1f52d.png", "1f52c.png"] },
+  { shapeFile: "1f496.png", correct: "1f495.png", options: ["1f495.png", "1f48c.png", "1f339.png"] },
+  { shapeFile: "1f496.png", correct: "1f490.png", options: ["1f490.png", "1f33c.png", "1f339.png"] },
+  { shapeFile: "1f496.png", correct: "1f48b.png", options: ["1f48b.png", "1f444.png", "1f445.png"] },
 ];
 
-/** G4 — מקום לחפץ */
+/** G4 — מקום לחפץ (תמונת הקשר בלבד — בלי מילים) */
 export type ContextMatchRound = {
-  place: string;
+  placeImage: string;
   correct: string;
   options: [string, string, string];
 };
 
 export const CONTEXT_MATCH_ROUNDS: ContextMatchRound[] = [
-  { place: "מטבח", correct: "1f944.png", options: ["1f944.png", "1f4a3.png", "1f9fc.png"] },
-  { place: "מיטה", correct: "1f6cf.png", options: ["1f6cf.png", "1f6bd.png", "1f9f9.png"] },
-  { place: "אמבטיה", correct: "1f9fc.png", options: ["1f9fc.png", "1f4a1.png", "1f4bb.png"] },
-  { place: "שולחן אוכל", correct: "1f37d.png", options: ["1f37d.png", "1f6cb.png", "1f6cf.png"] },
-  { place: "גן", correct: "1f331.png", options: ["1f331.png", "1f3e0.png", "1f4d5.png"] },
-  { place: "חדר משחקים", correct: "1f3ae.png", options: ["1f3ae.png", "1f4da.png", "1f4d6.png"] },
-  { place: "חנות", correct: "1f6d2.png", options: ["1f6d2.png", "1f3e0.png", "1f697.png"] },
-  { place: "בית ספר", correct: "1f4d2.png", options: ["1f4d2.png", "1f3c0.png", "1f3ae.png"] },
-  { place: "מגרש", correct: "26bd.png", options: ["26bd.png", "1f3c0.png", "1f3be.png"] },
-  { place: "חוף ים", correct: "1f3d6.png", options: ["1f3d6.png", "1f3d4.png", "1f3de.png"] },
-  { place: "משרד", correct: "1f4bb.png", options: ["1f4bb.png", "1f4d5.png", "1f4f1.png"] },
-  { place: "מוסך", correct: "1f527.png", options: ["1f527.png", "1f4d5.png", "1f3ae.png"] },
-  { place: "מספרה", correct: "1f488.png", options: ["1f488.png", "1f4d6.png", "1f3ae.png"] },
-  { place: "מעבדה", correct: "1f52c.png", options: ["1f52c.png", "1f3ae.png", "1f3c0.png"] },
-  { place: "מוזיאון", correct: "1f5bc.png", options: ["1f5bc.png", "1f3ae.png", "1f3c0.png"] },
-  { place: "ספרייה", correct: "1f4da.png", options: ["1f4da.png", "1f4bb.png", "1f3ae.png"] },
-  { place: "מטבח", correct: "1f373.png", options: ["1f373.png", "1f4d5.png", "1f4bb.png"] },
-  { place: "מקרר", correct: "1f9ca.png", options: ["1f9ca.png", "1f525.png", "1f4a7.png"] },
-  { place: "מיטה", correct: "1f6cf.png", options: ["1f6cf.png", "1f392.png", "1f45c.png"] },
-  { place: "שולחן כתיבה", correct: "270f.png", options: ["270f.png", "1f3c0.png", "26bd.png"] },
-  { place: "חדר ילדים", correct: "1f9f8.png", options: ["1f9f8.png", "1f4d5.png", "1f4bb.png"] },
-  { place: "מקלחת", correct: "1f6bf.png", options: ["1f6bf.png", "1f4d5.png", "1f3ae.png"] },
-  { place: "שירותים", correct: "1f6bd.png", options: ["1f6bd.png", "1f6c0.png", "1f4d5.png"] },
-  { place: "מטבח", correct: "1f963.png", options: ["1f963.png", "1f4d5.png", "1f4da.png"] },
-  { place: "מטבח", correct: "1f37c.png", options: ["1f37c.png", "1f37a.png", "1f377.png"] },
-  { place: "גינה", correct: "1f331.png", options: ["1f331.png", "1f3e0.png", "1f697.png"] },
-  { place: "משרד", correct: "1f4c4.png", options: ["1f4c4.png", "1f3c0.png", "26bd.png"] },
-  { place: "כיתה", correct: "1f4dd.png", options: ["1f4dd.png", "1f3c0.png", "1f3ae.png"] },
-  { place: "מגרש כדורסל", correct: "1f3c0.png", options: ["1f3c0.png", "1f3be.png", "26bd.png"] },
-  { place: "חוף", correct: "1f3d6.png", options: ["1f3d6.png", "1f3d4.png", "1f3de.png"] },
+  { placeImage: "1f373.png", correct: "1f944.png", options: ["1f944.png", "1f4a3.png", "1f9fc.png"] },
+  { placeImage: "1f634.png", correct: "1f6cf.png", options: ["1f6cf.png", "1f6bd.png", "1f9f9.png"] },
+  { placeImage: "1f6bf.png", correct: "1f9fc.png", options: ["1f9fc.png", "1f4a1.png", "1f4bb.png"] },
+  { placeImage: "1f3e0.png", correct: "1f37d.png", options: ["1f37d.png", "1f6cb.png", "1f6cf.png"] },
+  { placeImage: "1f3e0.png", correct: "1f331.png", options: ["1f331.png", "1f4d5.png", "1f697.png"] },
+  { placeImage: "1f386.png", correct: "1f3ae.png", options: ["1f3ae.png", "1f4da.png", "1f4d6.png"] },
+  { placeImage: "1f3ec.png", correct: "1f6d2.png", options: ["1f6d2.png", "1f3e0.png", "1f697.png"] },
+  { placeImage: "1f3eb.png", correct: "1f4d2.png", options: ["1f4d2.png", "1f3c0.png", "1f3ae.png"] },
+  { placeImage: "1f3df.png", correct: "26bd.png", options: ["26bd.png", "1f3c0.png", "1f3be.png"] },
+  { placeImage: "1f30a.png", correct: "1f3d6.png", options: ["1f3d6.png", "1f3d4.png", "1f3de.png"] },
+  { placeImage: "1f4c4.png", correct: "1f4bb.png", options: ["1f4bb.png", "1f4d5.png", "1f4f1.png"] },
+  { placeImage: "1f697.png", correct: "1f527.png", options: ["1f527.png", "1f4d5.png", "1f3ae.png"] },
+  { placeImage: "1f487.png", correct: "1f488.png", options: ["1f488.png", "1f4d6.png", "1f3ae.png"] },
+  { placeImage: "1f9ea.png", correct: "1f52c.png", options: ["1f52c.png", "1f3ae.png", "1f3c0.png"] },
+  { placeImage: "1f3db.png", correct: "1f5bc.png", options: ["1f5bc.png", "1f3ae.png", "1f3c0.png"] },
+  { placeImage: "1f3eb.png", correct: "1f4da.png", options: ["1f4da.png", "1f4bb.png", "1f3ae.png"] },
+  { placeImage: "1f963.png", correct: "1f373.png", options: ["1f373.png", "1f4d5.png", "1f4bb.png"] },
+  { placeImage: "2744.png", correct: "1f9ca.png", options: ["1f9ca.png", "1f525.png", "1f4a7.png"] },
+  { placeImage: "1f319.png", correct: "1f6cf.png", options: ["1f6cf.png", "1f392.png", "1f45c.png"] },
+  { placeImage: "1f4d1.png", correct: "270f.png", options: ["270f.png", "1f3c0.png", "26bd.png"] },
+  { placeImage: "1f3e0.png", correct: "1f9f8.png", options: ["1f9f8.png", "1f4d5.png", "1f4bb.png"] },
+  { placeImage: "1f6c0.png", correct: "1f6bf.png", options: ["1f6bf.png", "1f4d5.png", "1f3ae.png"] },
+  { placeImage: "1f6bb.png", correct: "1f6bd.png", options: ["1f6bd.png", "1f6c0.png", "1f4d5.png"] },
+  { placeImage: "1f37f.png", correct: "1f963.png", options: ["1f963.png", "1f4d5.png", "1f4da.png"] },
+  { placeImage: "1f373.png", correct: "1f37c.png", options: ["1f37c.png", "1f37a.png", "1f377.png"] },
+  { placeImage: "1f33f.png", correct: "1f331.png", options: ["1f331.png", "1f3e0.png", "1f697.png"] },
+  { placeImage: "1f4bc.png", correct: "1f4c4.png", options: ["1f4c4.png", "1f3c0.png", "26bd.png"] },
+  { placeImage: "1f3eb.png", correct: "1f4dd.png", options: ["1f4dd.png", "1f3c0.png", "1f3ae.png"] },
+  { placeImage: "1f3df.png", correct: "1f3c0.png", options: ["1f3c0.png", "1f3be.png", "26bd.png"] },
+  { placeImage: "1f30a.png", correct: "1f3d6.png", options: ["1f3d6.png", "1f3d4.png", "1f3de.png"] },
 ];
 
 /** G5 — מקום לפעולה */
@@ -220,124 +210,120 @@ export const ACTION_MATCH_ROUNDS: ActionMatchRound[] = [
   { place: "בית", actionHint: "לאכול ביחד", correct: "1f37d.png", options: ["1f37d.png", "1f4da.png", "1f3c0.png"] },
 ];
 
-/** G6 — השלמת תמונה (חצאי אימוג׳י) */
-export type VisualClosureRound = { file: string; label: string };
+/** G6 — השלמת תמונה — בוחרים את חצי התמונה הימני שמשלים את השמאלי */
+export type VisualClosureRound = {
+  file: string;
+  wrong: [string, string];
+};
 
-export const VISUAL_CLOSURE_ROUNDS: VisualClosureRound[] = [
-  { file: "1f436.png", label: "כלב" },
-  { file: "1f431.png", label: "חתול" },
-  { file: "1f430.png", label: "ארנב" },
-  { file: "1f34e.png", label: "תפוח" },
-  { file: "1f34c.png", label: "בננה" },
-  { file: "1f353.png", label: "תות" },
-  { file: "1f981.png", label: "אריה" },
-  { file: "1f418.png", label: "פיל" },
-  { file: "1f427.png", label: "פינגווין" },
-  { file: "1f433.png", label: "לווייתן" },
-  { file: "1f697.png", label: "מכונית" },
-  { file: "1f68c.png", label: "אוטובוס" },
-  { file: "2708.png", label: "מטוס" },
-  { file: "1f6a2.png", label: "ספינה" },
-  { file: "1f3e0.png", label: "בית" },
-  { file: "26bd.png", label: "כדור" },
-  { file: "1f3c0.png", label: "כדורסל" },
-  { file: "1f4d5.png", label: "ספר" },
-  { file: "1f33c.png", label: "פרח" },
-  { file: "1f333.png", label: "עץ" },
-  { file: "1f355.png", label: "פיצה" },
-  { file: "1f366.png", label: "גלידה" },
-  { file: "1f414.png", label: "תרנגולת" },
-  { file: "1f985.png", label: "נשר" },
-  { file: "1f984.png", label: "חד קרן" },
-  { file: "1f42c.png", label: "דולפין" },
-  { file: "1f41f.png", label: "דג" },
-  { file: "1f980.png", label: "סרטן" },
-  { file: "1f419.png", label: "תמנון" },
-  { file: "1f525.png", label: "אש" },
-];
+const VISUAL_CLOSURE_FILES = [
+  "1f436.png",
+  "1f431.png",
+  "1f430.png",
+  "1f34e.png",
+  "1f34c.png",
+  "1f353.png",
+  "1f981.png",
+  "1f418.png",
+  "1f427.png",
+  "1f433.png",
+  "1f697.png",
+  "1f68c.png",
+  "2708.png",
+  "1f6a2.png",
+  "1f3e0.png",
+  "26bd.png",
+  "1f3c0.png",
+  "1f4d5.png",
+  "1f33c.png",
+  "1f333.png",
+  "1f355.png",
+  "1f366.png",
+  "1f414.png",
+  "1f985.png",
+  "1f984.png",
+  "1f42c.png",
+  "1f41f.png",
+  "1f980.png",
+  "1f419.png",
+  "1f525.png",
+] as const;
 
-/** G7 — הפכים */
+export const VISUAL_CLOSURE_ROUNDS: VisualClosureRound[] = VISUAL_CLOSURE_FILES.map((file, i) => {
+  const n = VISUAL_CLOSURE_FILES.length;
+  return {
+    file,
+    wrong: [VISUAL_CLOSURE_FILES[(i + 1) % n], VISUAL_CLOSURE_FILES[(i + 2) % n]] as [string, string],
+  };
+});
+
+/** G7 — הפכים (תמונת גירוי + בחירת התמונה ההפוכה; בלי מלל על המסך) */
 export type OppositeRound = {
-  prompt: string;
+  /** תמונה אחת בצד הזוג — בוחרים את ההפך שלה */
+  promptImage: string;
   correct: string;
   options: [string, string, string];
 };
 
 export const OPPOSITE_ROUNDS: OppositeRound[] = [
-  { prompt: "גדול", correct: "1f41d.png", options: ["1f41d.png", "1f418.png", "1f433.png"] },
-  { prompt: "קטן", correct: "1f418.png", options: ["1f418.png", "1f41d.png", "1f430.png"] },
-  { prompt: "שמן", correct: "1f969.png", options: ["1f969.png", "1f969.png", "1f969.png"] },
-  { prompt: "רזה", correct: "1f969.png", options: ["1f969.png", "1f969.png", "1f969.png"] },
-  { prompt: "גבוה", correct: "1f3d7.png", options: ["1f3d7.png", "1fab9.png", "1f4d5.png"] },
-  { prompt: "נמוך", correct: "1fab9.png", options: ["1fab9.png", "1f3d7.png", "1f4d5.png"] },
-  { prompt: "חם", correct: "2744.png", options: ["2744.png", "1f525.png", "2600.png"] },
-  { prompt: "קר", correct: "2600.png", options: ["2600.png", "2744.png", "1f327.png"] },
-  { prompt: "יום", correct: "1f319.png", options: ["1f319.png", "2600.png", "26c5.png"] },
-  { prompt: "לילה", correct: "2600.png", options: ["2600.png", "1f319.png", "2b50.png"] },
-  { prompt: "מהר", correct: "1f430.png", options: ["1f430.png", "1f422.png", "1f40c.png"] },
-  { prompt: "לאט", correct: "1f422.png", options: ["1f422.png", "1f430.png", "1f3c3.png"] },
-  { prompt: "עבה", correct: "1f4d6.png", options: ["1f4d6.png", "1f4d2.png", "1f4d5.png"] },
-  { prompt: "דק", correct: "1f4d2.png", options: ["1f4d2.png", "1f4d6.png", "1f4da.png"] },
-  { prompt: "ריק", correct: "1f37d.png", options: ["1f37d.png", "1f963.png", "1f37c.png"] },
-  { prompt: "מלא", correct: "1f963.png", options: ["1f963.png", "1f37d.png", "1f37c.png"] },
-  { prompt: "ישן", correct: "1f476.png", options: ["1f476.png", "1f9d1.png", "1f468.png"] },
-  { prompt: "חדש", correct: "1f4f1.png", options: ["1f4f1.png", "260e.png", "1f4bb.png"] },
-  { prompt: "רחב", correct: "1f6d1.png", options: ["1f6d1.png", "1f697.png", "1f69a.png"] },
-  { prompt: "צר", correct: "1f697.png", options: ["1f697.png", "1f69a.png", "1f68c.png"] },
-  { prompt: "קשה", correct: "1faa8.png", options: ["1faa8.png", "1f9b8.png", "1f9b9.png"] },
-  { prompt: "רך", correct: "1f9b8.png", options: ["1f9b8.png", "1faa8.png", "1f9b9.png"] },
-  { prompt: "עבודה", correct: "1f4bb.png", options: ["1f4bb.png", "1f3c0.png", "1f3ae.png"] },
-  { prompt: "מנוחה", correct: "1f6cb.png", options: ["1f6cb.png", "1f4bb.png", "1f3ae.png"] },
-  { prompt: "עליון", correct: "2b06.png", options: ["2b06.png", "2b07.png", "27a1.png"] },
-  { prompt: "תחתון", correct: "2b07.png", options: ["2b07.png", "2b06.png", "27a1.png"] },
-  { prompt: "שמאל", correct: "2b05.png", options: ["2b05.png", "27a1.png", "2b06.png"] },
-  { prompt: "ימין", correct: "27a1.png", options: ["27a1.png", "2b05.png", "2b06.png"] },
-  { prompt: "פתוח", correct: "1f6aa.png", options: ["1f6aa.png", "1f512.png", "1f510.png"] },
-  { prompt: "סגור", correct: "1f512.png", options: ["1f512.png", "1f6aa.png", "1f510.png"] },
+  { promptImage: "1f418.png", correct: "1f41d.png", options: ["1f41d.png", "1f418.png", "1f433.png"] },
+  { promptImage: "1f41d.png", correct: "1f418.png", options: ["1f418.png", "1f41d.png", "1f430.png"] },
+  { promptImage: "1f42e.png", correct: "1f40d.png", options: ["1f40d.png", "1f42e.png", "1f41f.png"] },
+  { promptImage: "1f40d.png", correct: "1f42e.png", options: ["1f42e.png", "1f40d.png", "1f418.png"] },
+  { promptImage: "1f3d7.png", correct: "1fab9.png", options: ["1fab9.png", "1f3d7.png", "1f4d5.png"] },
+  { promptImage: "1fab9.png", correct: "1f3d7.png", options: ["1f3d7.png", "1fab9.png", "1f4d5.png"] },
+  { promptImage: "1f525.png", correct: "2744.png", options: ["2744.png", "1f525.png", "2600.png"] },
+  { promptImage: "2744.png", correct: "2600.png", options: ["2600.png", "2744.png", "1f327.png"] },
+  { promptImage: "2600.png", correct: "1f319.png", options: ["1f319.png", "2600.png", "26c5.png"] },
+  { promptImage: "1f319.png", correct: "2600.png", options: ["2600.png", "1f319.png", "2b50.png"] },
+  { promptImage: "1f430.png", correct: "1f422.png", options: ["1f422.png", "1f430.png", "1f40c.png"] },
+  { promptImage: "1f422.png", correct: "1f430.png", options: ["1f430.png", "1f422.png", "1f3c3.png"] },
+  { promptImage: "1f4d6.png", correct: "1f4d2.png", options: ["1f4d2.png", "1f4d6.png", "1f4d5.png"] },
+  { promptImage: "1f4d2.png", correct: "1f4d6.png", options: ["1f4d6.png", "1f4d2.png", "1f4da.png"] },
+  { promptImage: "1f37d.png", correct: "1f963.png", options: ["1f963.png", "1f37d.png", "1f37c.png"] },
+  { promptImage: "1f963.png", correct: "1f37d.png", options: ["1f37d.png", "1f963.png", "1f37c.png"] },
+  { promptImage: "260e.png", correct: "1f4f1.png", options: ["1f4f1.png", "260e.png", "1f4bb.png"] },
+  { promptImage: "1f4f1.png", correct: "260e.png", options: ["260e.png", "1f4f1.png", "1f4bb.png"] },
+  { promptImage: "1f6d1.png", correct: "1f697.png", options: ["1f697.png", "1f6d1.png", "1f69a.png"] },
+  { promptImage: "1f697.png", correct: "1f6d1.png", options: ["1f6d1.png", "1f697.png", "1f68c.png"] },
+  { promptImage: "1faa8.png", correct: "1f9b8.png", options: ["1f9b8.png", "1faa8.png", "1f9b9.png"] },
+  { promptImage: "1f9b8.png", correct: "1faa8.png", options: ["1faa8.png", "1f9b8.png", "1f9b9.png"] },
+  { promptImage: "1f4bb.png", correct: "1f6cb.png", options: ["1f6cb.png", "1f4bb.png", "1f3ae.png"] },
+  { promptImage: "1f6cb.png", correct: "1f4bb.png", options: ["1f4bb.png", "1f6cb.png", "1f3ae.png"] },
+  { promptImage: "2b06.png", correct: "2b07.png", options: ["2b07.png", "2b06.png", "27a1.png"] },
+  { promptImage: "2b07.png", correct: "2b06.png", options: ["2b06.png", "2b07.png", "27a1.png"] },
+  { promptImage: "2b05.png", correct: "27a1.png", options: ["27a1.png", "2b05.png", "2b06.png"] },
+  { promptImage: "27a1.png", correct: "2b05.png", options: ["2b05.png", "27a1.png", "2b06.png"] },
+  { promptImage: "1f6aa.png", correct: "1f512.png", options: ["1f512.png", "1f6aa.png", "1f510.png"] },
+  { promptImage: "1f512.png", correct: "1f6aa.png", options: ["1f6aa.png", "1f512.png", "1f510.png"] },
 ];
 
-/** Fix opposites with duplicate emojis / bad pairs */
-OPPOSITE_ROUNDS[2] = { prompt: "שמן", correct: "1f42e.png", options: ["1f42e.png", "1f40d.png", "1f41f.png"] };
-OPPOSITE_ROUNDS[3] = { prompt: "רזה", correct: "1f40d.png", options: ["1f40d.png", "1f42e.png", "1f418.png"] };
-
-/** G8 — חרוזים */
+/** G8 — חרוזים (תמונות בלבד; ההקראה מדברת על חרוז לשם המוצג) */
 export type RhymeRound = {
-  anchor: string;
+  anchorFile: string;
   correct: string;
   options: [string, string, string];
 };
 
 export const RHYME_ROUNDS: RhymeRound[] = [
-  { anchor: "חץ", correct: "עץ", options: ["עץ", "בית", "דג"] },
-  { anchor: "בית", correct: "קיץ", options: ["קיץ", "עץ", "דג"] },
-  { anchor: "סוס", correct: "כוס", options: ["כוס", "בית", "דג"] },
-  { anchor: "עט", correct: "חת", options: ["חת", "בית", "דג"] },
-  { anchor: "אף", correct: "כף", options: ["כף", "עץ", "דג"] },
-  { anchor: "יום", correct: "חלום", options: ["חלום", "לילה", "שמש"] },
-  { anchor: "לילה", correct: "מילה", options: ["מילה", "יום", "שמש"] },
-  { anchor: "עץ", correct: "חץ", options: ["חץ", "בית", "דג"] },
-  { anchor: "יד", correct: "סיד", options: ["סיד", "רגל", "ראש"] },
-  { anchor: "רגל", correct: "מגדל", options: ["מגדל", "יד", "עץ"] },
-  { anchor: "מים", correct: "ים", options: ["ים", "אש", "אוויר"] },
-  { anchor: "כלב", correct: "לב", options: ["לב", "חתול", "דג"] },
-  { anchor: "צב", correct: "כב", options: ["כב", "דג", "עץ"] },
-  { anchor: "כיסא", correct: "מסע", options: ["מסע", "שולחן", "חלון"] },
-  { anchor: "ענן", correct: "גן", options: ["גן", "שמש", "ים"] },
-  { anchor: "ים", correct: "ת׳ם", options: ["ת׳ם", "שמש", "עץ"] },
-  { anchor: "שולחן", correct: "מטבח", options: ["מטבח", "כיסא", "חלון"] },
-  { anchor: "חלון", correct: "כרון", options: ["כרון", "דלת", "קיר"] },
-  { anchor: "דלת", correct: "בעלת", options: ["בעלת", "חלון", "קיר"] },
-  { anchor: "ארנב", correct: "סב", options: ["סב", "דג", "עץ"] },
-  { anchor: "מנורה", correct: "ספורה", options: ["ספורה", "שולחן", "קיר"] },
-  { anchor: "חתול", correct: "גדול", options: ["גדול", "כלב", "דג"] },
-  { anchor: "דג", correct: "חג", options: ["חג", "בית", "עץ"] },
-  { anchor: "אש", correct: "קֶרֶש", options: ["קֶרֶש", "מים", "עץ"] },
-  { anchor: "שמש", correct: "קֶרֶש", options: ["קֶרֶש", "עץ", "בית"] },
-  { anchor: "בית", correct: "לילית", options: ["לילית", "ספר", "עץ"] },
-  { anchor: "כובע", correct: "אבא", options: ["אבא", "אמא", "סבא"] },
-  { anchor: "אריה", correct: "מלפפון", options: ["מלפפון", "בננה", "עגבנייה"] },
-  { anchor: "סבא", correct: "אמא", options: ["אמא", "אבא", "דג"] },
-  { anchor: "אמא", correct: "סבא", options: ["סבא", "אבא", "דג"] },
+  { anchorFile: "1f3af.png", correct: "1f333.png", options: ["1f333.png", "1f3e0.png", "1f41f.png"] },
+  { anchorFile: "1f333.png", correct: "1f3af.png", options: ["1f3af.png", "1f3e0.png", "1f430.png"] },
+  { anchorFile: "1f436.png", correct: "1f496.png", options: ["1f496.png", "1f431.png", "1f41f.png"] },
+  { anchorFile: "1f3e0.png", correct: "1f31e.png", options: ["1f31e.png", "1f4d5.png", "1f333.png"] },
+  { anchorFile: "1f434.png", correct: "1f964.png", options: ["1f964.png", "1f697.png", "1f3e0.png"] },
+  { anchorFile: "2600.png", correct: "1f4a4.png", options: ["1f4a4.png", "1f319.png", "1f525.png"] },
+  { anchorFile: "1f319.png", correct: "1f4dd.png", options: ["1f4dd.png", "2600.png", "1f525.png"] },
+  { anchorFile: "1f41f.png", correct: "1f382.png", options: ["1f382.png", "1f3e0.png", "1f436.png"] },
+  { anchorFile: "2601.png", correct: "1f331.png", options: ["1f331.png", "2600.png", "1f30a.png"] },
+  { anchorFile: "1f4a7.png", correct: "1f30a.png", options: ["1f30a.png", "1f525.png", "1f436.png"] },
+  { anchorFile: "1f443.png", correct: "1f590.png", options: ["1f590.png", "1f441.png", "1f445.png"] },
+  { anchorFile: "1f525.png", correct: "1fab5.png", options: ["1fab5.png", "1f4a7.png", "2744.png"] },
+  { anchorFile: "1f590.png", correct: "1f4b0.png", options: ["1f4b0.png", "1f448.png", "1f449.png"] },
+  { anchorFile: "1f6a2.png", correct: "1f41f.png", options: ["1f41f.png", "1f30a.png", "1f3d6.png"] },
+  { anchorFile: "1f981.png", correct: "1f952.png", options: ["1f952.png", "1f34c.png", "1f418.png"] },
+  { anchorFile: "1f9f8.png", correct: "1f474.png", options: ["1f474.png", "1f469.png", "1f476.png"] },
+  { anchorFile: "1f452.png", correct: "1f468.png", options: ["1f468.png", "1f469.png", "1f476.png"] },
+  { anchorFile: "1f469.png", correct: "1f474.png", options: ["1f474.png", "1f468.png", "1f476.png"] },
 ];
 
 /** G10 — סדרות מספרים */
@@ -417,48 +403,329 @@ function buildCountingRounds(): CountingRound[] {
 export const COUNTING_ROUNDS: CountingRound[] = buildCountingRounds();
 
 /** G12 — אות ראשונה */
+export type PhoneticsOption = { file: string; word: string };
+
 export type PhoneticsRound = {
   letter: string;
   word: string;
   correct: string;
-  options: [string, string, string];
+  options: [PhoneticsOption, PhoneticsOption, PhoneticsOption];
 };
 
 export const PHONETICS_ROUNDS: PhoneticsRound[] = [
-  { letter: "א", word: "אגס", correct: "1f350.png", options: ["1f350.png", "1f34e.png", "1f34c.png"] },
-  { letter: "ב", word: "בננה", correct: "1f34c.png", options: ["1f34c.png", "1f34e.png", "1f353.png"] },
-  { letter: "ג", word: "גזר", correct: "1f955.png", options: ["1f955.png", "1f966.png", "1f345.png"] },
-  { letter: "ד", word: "דג", correct: "1f41f.png", options: ["1f41f.png", "1f419.png", "1f420.png"] },
-  { letter: "ה", word: "היפופוטם", correct: "1f99b.png", options: ["1f99b.png", "1f418.png", "1f42c.png"] },
-  { letter: "ו", word: "ורד", correct: "1f339.png", options: ["1f339.png", "1f33c.png", "1f33b.png"] },
-  { letter: "ז", word: "זברה", correct: "1f993.png", options: ["1f993.png", "1f992.png", "1f998.png"] },
-  { letter: "ח", word: "חתול", correct: "1f431.png", options: ["1f431.png", "1f436.png", "1f430.png"] },
-  { letter: "ט", word: "טיגריס", correct: "1f405.png", options: ["1f405.png", "1f406.png", "1f981.png"] },
-  { letter: "י", word: "ינשוף", correct: "1f989.png", options: ["1f989.png", "1f985.png", "1f426.png"] },
-  { letter: "כ", word: "כבשה", correct: "1f411.png", options: ["1f411.png", "1f410.png", "1f404.png"] },
-  { letter: "ל", word: "לווייתן", correct: "1f433.png", options: ["1f433.png", "1f40b.png", "1f988.png"] },
-  { letter: "מ", word: "מכונית", correct: "1f697.png", options: ["1f697.png", "1f68c.png", "1f695.png"] },
-  { letter: "נ", word: "נשר", correct: "1f985.png", options: ["1f985.png", "1f986.png", "1f989.png"] },
-  { letter: "ס", word: "סוס", correct: "1f434.png", options: ["1f434.png", "1f40e.png", "1f402.png"] },
-  { letter: "ע", word: "ענבים", correct: "1f347.png", options: ["1f347.png", "1f34e.png", "1f352.png"] },
-  { letter: "פ", word: "פיל", correct: "1f418.png", options: ["1f418.png", "1f42f.png", "1f404.png"] },
-  { letter: "צ", word: "צפרדע", correct: "1f438.png", options: ["1f438.png", "1f422.png", "1f40d.png"] },
-  { letter: "ק", word: "קוף", correct: "1f435.png", options: ["1f435.png", "1f412.png", "1f9a7.png"] },
-  { letter: "ר", word: "רדיו", correct: "1f4fb.png", options: ["1f4fb.png", "1f4fa.png", "1f399.png"] },
-  { letter: "ש", word: "שמש", correct: "2600.png", options: ["2600.png", "1f319.png", "26c5.png"] },
-  { letter: "ת", word: "תפוח", correct: "1f34e.png", options: ["1f34e.png", "1f34f.png", "1f350.png"] },
-  { letter: "א", word: "אריה", correct: "1f981.png", options: ["1f981.png", "1f42f.png", "1f405.png"] },
-  { letter: "ב", word: "ברווז", correct: "1f986.png", options: ["1f986.png", "1f427.png", "1f424.png"] },
-  { letter: "ג", word: "ג׳ירפה", correct: "1f992.png", options: ["1f992.png", "1f993.png", "1f998.png"] },
-  { letter: "ד", word: "דולפין", correct: "1f42c.png", options: ["1f42c.png", "1f433.png", "1f988.png"] },
-  { letter: "ח", word: "חד קרן", correct: "1f984.png", options: ["1f984.png", "1f981.png", "1f434.png"] },
-  { letter: "כ", word: "כריש", correct: "1f988.png", options: ["1f988.png", "1f420.png", "1f41f.png"] },
-  { letter: "מ", word: "מנגו", correct: "1f96d.png", options: ["1f96d.png", "1f34e.png", "1f34c.png"] },
-  { letter: "ע", word: "עוף", correct: "1f414.png", options: ["1f414.png", "1f413.png", "1f423.png"] },
-  { letter: "ש", word: "שועל", correct: "1f98a.png", options: ["1f98a.png", "1f43a.png", "1f431.png"] },
+  {
+    letter: "א",
+    word: "אגס",
+    correct: "1f350.png",
+    options: [
+      { file: "1f350.png", word: "אגס" },
+      { file: "1f34e.png", word: "תפוח" },
+      { file: "1f34c.png", word: "בננה" },
+    ],
+  },
+  {
+    letter: "ב",
+    word: "בננה",
+    correct: "1f34c.png",
+    options: [
+      { file: "1f34c.png", word: "בננה" },
+      { file: "1f34e.png", word: "תפוח" },
+      { file: "1f353.png", word: "תות" },
+    ],
+  },
+  {
+    letter: "ג",
+    word: "גזר",
+    correct: "1f955.png",
+    options: [
+      { file: "1f955.png", word: "גזר" },
+      { file: "1f966.png", word: "חסה" },
+      { file: "1f345.png", word: "עגבנייה" },
+    ],
+  },
+  {
+    letter: "ד",
+    word: "דג",
+    correct: "1f41f.png",
+    options: [
+      { file: "1f41f.png", word: "דג" },
+      { file: "1f419.png", word: "תמנון" },
+      { file: "1f420.png", word: "דג טרופי" },
+    ],
+  },
+  {
+    letter: "ה",
+    word: "היפופוטם",
+    correct: "1f99b.png",
+    options: [
+      { file: "1f99b.png", word: "היפופוטם" },
+      { file: "1f418.png", word: "פיל" },
+      { file: "1f42c.png", word: "דולפין" },
+    ],
+  },
+  {
+    letter: "ו",
+    word: "ורד",
+    correct: "1f339.png",
+    options: [
+      { file: "1f339.png", word: "ורד" },
+      { file: "1f33c.png", word: "פרח" },
+      { file: "1f33b.png", word: "חמניה" },
+    ],
+  },
+  {
+    letter: "ז",
+    word: "זברה",
+    correct: "1f993.png",
+    options: [
+      { file: "1f993.png", word: "זברה" },
+      { file: "1f992.png", word: "ג׳ירפה" },
+      { file: "1f998.png", word: "קרנף" },
+    ],
+  },
+  {
+    letter: "ח",
+    word: "חתול",
+    correct: "1f431.png",
+    options: [
+      { file: "1f431.png", word: "חתול" },
+      { file: "1f436.png", word: "כלב" },
+      { file: "1f430.png", word: "ארנב" },
+    ],
+  },
+  {
+    letter: "ט",
+    word: "טיגריס",
+    correct: "1f405.png",
+    options: [
+      { file: "1f405.png", word: "טיגריס" },
+      { file: "1f406.png", word: "נמר" },
+      { file: "1f981.png", word: "אריה" },
+    ],
+  },
+  {
+    letter: "י",
+    word: "ינשוף",
+    correct: "1f989.png",
+    options: [
+      { file: "1f989.png", word: "ינשוף" },
+      { file: "1f985.png", word: "נשר" },
+      { file: "1f426.png", word: "ציפור" },
+    ],
+  },
+  {
+    letter: "כ",
+    word: "כבשה",
+    correct: "1f411.png",
+    options: [
+      { file: "1f411.png", word: "כבשה" },
+      { file: "1f410.png", word: "עז" },
+      { file: "1f404.png", word: "פרה" },
+    ],
+  },
+  {
+    letter: "ל",
+    word: "לווייתן",
+    correct: "1f433.png",
+    options: [
+      { file: "1f433.png", word: "לווייתן" },
+      { file: "1f40b.png", word: "לוויתן" },
+      { file: "1f988.png", word: "כריש" },
+    ],
+  },
+  {
+    letter: "מ",
+    word: "מכונית",
+    correct: "1f697.png",
+    options: [
+      { file: "1f697.png", word: "מכונית" },
+      { file: "1f68c.png", word: "אוטובוס" },
+      { file: "1f695.png", word: "מונית" },
+    ],
+  },
+  {
+    letter: "נ",
+    word: "נשר",
+    correct: "1f985.png",
+    options: [
+      { file: "1f985.png", word: "נשר" },
+      { file: "1f986.png", word: "ברווז" },
+      { file: "1f989.png", word: "ינשוף" },
+    ],
+  },
+  {
+    letter: "ס",
+    word: "סוס",
+    correct: "1f434.png",
+    options: [
+      { file: "1f434.png", word: "סוס" },
+      { file: "1f40e.png", word: "פרצוף סוס" },
+      { file: "1f402.png", word: "פר" },
+    ],
+  },
+  {
+    letter: "ע",
+    word: "ענבים",
+    correct: "1f347.png",
+    options: [
+      { file: "1f347.png", word: "ענבים" },
+      { file: "1f34e.png", word: "תפוח" },
+      { file: "1f352.png", word: "מלון" },
+    ],
+  },
+  {
+    letter: "פ",
+    word: "פיל",
+    correct: "1f418.png",
+    options: [
+      { file: "1f418.png", word: "פיל" },
+      { file: "1f42f.png", word: "קרנף" },
+      { file: "1f404.png", word: "פרה" },
+    ],
+  },
+  {
+    letter: "צ",
+    word: "צפרדע",
+    correct: "1f438.png",
+    options: [
+      { file: "1f438.png", word: "צפרדע" },
+      { file: "1f422.png", word: "צב" },
+      { file: "1f40d.png", word: "נחש" },
+    ],
+  },
+  {
+    letter: "ק",
+    word: "קוף",
+    correct: "1f435.png",
+    options: [
+      { file: "1f435.png", word: "קוף" },
+      { file: "1f412.png", word: "קוף" },
+      { file: "1f9a7.png", word: "גורילה" },
+    ],
+  },
+  {
+    letter: "ר",
+    word: "רדיו",
+    correct: "1f4fb.png",
+    options: [
+      { file: "1f4fb.png", word: "רדיו" },
+      { file: "1f4fa.png", word: "טלוויזיה" },
+      { file: "1f399.png", word: "מיקרופון" },
+    ],
+  },
+  {
+    letter: "ש",
+    word: "שמש",
+    correct: "2600.png",
+    options: [
+      { file: "2600.png", word: "שמש" },
+      { file: "1f319.png", word: "ירח" },
+      { file: "26c5.png", word: "ענן" },
+    ],
+  },
+  {
+    letter: "ת",
+    word: "תפוח",
+    correct: "1f34e.png",
+    options: [
+      { file: "1f34e.png", word: "תפוח" },
+      { file: "1f34f.png", word: "תפוח אדום" },
+      { file: "1f350.png", word: "אגס" },
+    ],
+  },
+  {
+    letter: "א",
+    word: "אריה",
+    correct: "1f981.png",
+    options: [
+      { file: "1f981.png", word: "אריה" },
+      { file: "1f42f.png", word: "קרנף" },
+      { file: "1f405.png", word: "טיגריס" },
+    ],
+  },
+  {
+    letter: "ב",
+    word: "ברווז",
+    correct: "1f986.png",
+    options: [
+      { file: "1f986.png", word: "ברווז" },
+      { file: "1f427.png", word: "פינגווין" },
+      { file: "1f424.png", word: "אפרוח" },
+    ],
+  },
+  {
+    letter: "ג",
+    word: "ג׳ירפה",
+    correct: "1f992.png",
+    options: [
+      { file: "1f992.png", word: "ג׳ירפה" },
+      { file: "1f993.png", word: "זברה" },
+      { file: "1f998.png", word: "קרנף" },
+    ],
+  },
+  {
+    letter: "ד",
+    word: "דולפין",
+    correct: "1f42c.png",
+    options: [
+      { file: "1f42c.png", word: "דולפין" },
+      { file: "1f433.png", word: "לווייתן" },
+      { file: "1f988.png", word: "כריש" },
+    ],
+  },
+  {
+    letter: "ח",
+    word: "חד קרן",
+    correct: "1f984.png",
+    options: [
+      { file: "1f984.png", word: "חד קרן" },
+      { file: "1f981.png", word: "אריה" },
+      { file: "1f434.png", word: "סוס" },
+    ],
+  },
+  {
+    letter: "כ",
+    word: "כריש",
+    correct: "1f988.png",
+    options: [
+      { file: "1f988.png", word: "כריש" },
+      { file: "1f420.png", word: "דג טרופי" },
+      { file: "1f41f.png", word: "דג" },
+    ],
+  },
+  {
+    letter: "מ",
+    word: "מנגו",
+    correct: "1f96d.png",
+    options: [
+      { file: "1f96d.png", word: "מנגו" },
+      { file: "1f34e.png", word: "תפוח" },
+      { file: "1f34c.png", word: "בננה" },
+    ],
+  },
+  {
+    letter: "ע",
+    word: "עוף",
+    correct: "1f414.png",
+    options: [
+      { file: "1f414.png", word: "עוף" },
+      { file: "1f413.png", word: "תרנגול" },
+      { file: "1f423.png", word: "אפרוח" },
+    ],
+  },
+  {
+    letter: "ש",
+    word: "שועל",
+    correct: "1f98a.png",
+    options: [
+      { file: "1f98a.png", word: "שועל" },
+      { file: "1f43a.png", word: "זאב" },
+      { file: "1f431.png", word: "חתול" },
+    ],
+  },
 ];
 
-/** G13 — זיהוי צליל (TTS בעברית) */
+/** G13 — זיהוי צליל (צליל סינתזה לפי החפץ; גיבוי TTS) */
 export type SoundIdRound = {
   speak: string;
   correct: string;
@@ -496,4 +763,5 @@ export const SOUND_ID_ROUNDS: SoundIdRound[] = [
   { speak: "זברה", correct: "1f993.png", options: ["1f993.png", "1f992.png", "1f404.png"] },
   { speak: "ג׳ירפה", correct: "1f992.png", options: ["1f992.png", "1f993.png", "1f998.png"] },
   { speak: "תרנגול", correct: "1f413.png", options: ["1f413.png", "1f414.png", "1f423.png"] },
+  { speak: "צפרדע", correct: "1f438.png", options: ["1f438.png", "1f422.png", "1f40d.png"] },
 ];

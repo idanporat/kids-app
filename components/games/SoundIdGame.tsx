@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
 import { shuffle } from "@/components/games/ModuleGameCommon";
-import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew, unlockGameAudio } from "@/lib/game-audio";
+import { playCorrectChime, playSoftBuzz, playSoundIdHint, resumeAudioContext, unlockGameAudio } from "@/lib/game-audio";
 import { SOUND_ID_ROUNDS, twemojiUrl } from "@/lib/game-data";
 import { bumpGameModuleRound, recordGameAttempt } from "@/lib/game-progress";
 
@@ -49,19 +49,19 @@ function SoundIdInner({
     if (heardRef.current === roundKey) return;
     heardRef.current = roundKey;
     unlockGameAudio();
-    void speakHebrew(round.speak);
+    void playSoundIdHint(round.correct, round.speak);
   }
 
   function replay() {
     if (busy) return;
     resumeAudioContext();
-    void speakHebrew(round.speak);
+    void playSoundIdHint(round.correct, round.speak);
   }
 
   function handlePick(file: string) {
     if (busy) return;
     if (file !== round.correct) {
-      recordGameAttempt(token, "sound-id", "wrong", `צליל «${round.speak}» — בחירה לא נכונה`);
+      recordGameAttempt(token, "sound-id", "wrong", "מי משמיע — בחירה לא נכונה");
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(35);
       return;

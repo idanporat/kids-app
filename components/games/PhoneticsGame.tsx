@@ -31,7 +31,10 @@ function PhoneticsInner({
   const [correctInWave, setCorrectInWave] = useState(0);
 
   const round = PHONETICS_ROUNDS[indices[cursor % indices.length]];
-  const shuffledOptions = useMemo(() => shuffle([...round.options]), [round]);
+  const shuffledOptions = useMemo(
+    () => shuffle([round.options[0], round.options[1], round.options[2]]),
+    [round],
+  );
 
   const waveProgress = (correctInWave / 5) * 100;
   useEffect(() => {
@@ -90,23 +93,26 @@ function PhoneticsInner({
         <p className="text-lg text-slate-600 dark:text-slate-300">בחרו את התמונה שמתחילה באות הזו</p>
       </div>
 
-      <div className="grid w-full max-w-lg grid-cols-3 gap-4">
-        {shuffledOptions.map((file) => (
+      <div className="grid w-full max-w-lg grid-cols-1 gap-4 sm:grid-cols-3">
+        {shuffledOptions.map((opt) => (
           <button
-            key={`${cursor}-${file}`}
+            key={`${cursor}-${opt.file}`}
             type="button"
             disabled={busy}
-            onClick={() => handlePick(file)}
-            className="flex min-h-[104px] min-w-[104px] items-center justify-center rounded-3xl border-4 border-slate-200 bg-white p-2 shadow-md transition active:scale-95 disabled:opacity-70 dark:border-slate-600 dark:bg-slate-900"
+            onClick={() => handlePick(opt.file)}
+            className="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-3xl border-4 border-slate-200 bg-white px-2 py-3 shadow-md transition active:scale-95 disabled:opacity-70 dark:border-slate-600 dark:bg-slate-900"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={twemojiUrl(file)}
+              src={twemojiUrl(opt.file)}
               alt=""
               width={100}
               height={100}
               className="h-[100px] w-[100px] object-contain"
             />
+            <span className="text-center text-2xl font-bold leading-tight text-slate-800 dark:text-slate-100">
+              {opt.word}
+            </span>
           </button>
         ))}
       </div>

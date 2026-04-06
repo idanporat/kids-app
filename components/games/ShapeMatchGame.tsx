@@ -41,13 +41,13 @@ function ShapeMatchInner({
   function replay() {
     if (busy) return;
     resumeAudioContext();
-    void speakHebrew(`איזה חפץ דומה לצורה ${round.shapeName}?`);
+    void speakHebrew("איזה חפץ דומה לצורה שמוצגת");
   }
 
   function handlePick(file: string) {
     if (busy) return;
     if (file !== round.correct) {
-      recordGameAttempt(token, "shape-match", "wrong", `צורה «${round.shapeName}» — בחירה לא נכונה`);
+      recordGameAttempt(token, "shape-match", "wrong", "צורה וחפץ — בחירה לא נכונה");
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(35);
       return;
@@ -70,20 +70,18 @@ function ShapeMatchInner({
   return (
     <div className="flex flex-col items-center gap-8 px-2">
       <div className="flex flex-col items-center gap-4">
-        <p className="text-center text-2xl font-bold text-slate-800 dark:text-slate-100">צורה וחפץ</p>
         <button
           type="button"
           onClick={replay}
           disabled={busy}
           className="inline-flex min-h-[56px] min-w-[56px] items-center justify-center rounded-full border-4 border-emerald-400 bg-emerald-100 px-6 text-4xl shadow-md transition active:scale-95 disabled:opacity-60 dark:bg-emerald-950/50"
-          aria-label="השמע שוב"
+          aria-label="השמע הוראות"
         >
           🔊
         </button>
       </div>
 
-      <div className="flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-200 bg-amber-50/80 px-8 py-6 dark:border-amber-700 dark:bg-amber-950/30">
-        <p className="text-3xl font-bold">{round.shapeName}</p>
+      <div className="flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-200 bg-amber-50/80 px-10 py-6 dark:border-amber-700 dark:bg-amber-950/30">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={twemojiUrl(round.shapeFile)}

@@ -551,6 +551,7 @@ export {
   type CountingRound,
   type EnvironmentRound,
   type OppositeRound,
+  type PhoneticsOption,
   type PhoneticsRound,
   type RhymeRound,
   type SequenceRound,
