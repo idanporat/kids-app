@@ -4,8 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
 import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew, unlockGameAudio } from "@/lib/game-audio";
-import { bumpHeroWords } from "@/lib/game-progress";
-import { twemojiUrl, WORD_ROUNDS } from "@/lib/game-data";
+import { bumpHeroWords, recordGameAttempt } from "@/lib/game-progress";
+import { twemojiUrl, type WordRound, WORD_ROUNDS } from "@/lib/game-data";
+
+function isCorrectWordPick(round: WordRound, file: string): boolean {
+  if (file === round.correct) return true;
+  return round.acceptAlso?.includes(file) ?? false;
+}
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -16,7 +21,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function HeroWordsInner({ onProgress }: { onProgress: (pct: number) => void }) {
+function HeroWordsInner({
+  token,
+  onProgress,
+}: {
+  token: string;
+  onProgress: (pct: number) => void;
+}) {
   const { triggerStars, triggerRoundComplete } = useGameRewards();
   const indices = useMemo(() => shuffle(WORD_ROUNDS.map((_, i) => i)), []);
   const [cursor, setCursor] = useState(0);
@@ -57,7 +68,13 @@ function HeroWordsInner({ onProgress }: { onProgress: (pct: number) => void }) {
 
   function handlePick(file: string) {
     if (busy) return;
-    if (file !== round.correct) {
+    if (!isCorrectWordPick(round, file)) {
+      recordGameAttempt(
+        token,
+        "hero-words",
+        "wrong",
+        `המילה «${round.word}» — נבחרה תמונה לא נכונה`
+      );
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate(35);
@@ -65,6 +82,7 @@ function HeroWordsInner({ onProgress }: { onProgress: (pct: number) => void }) {
       return;
     }
     setBusy(true);
+    recordGameAttempt(token, "hero-words", "correct");
     playCorrectChime();
     triggerStars();
     const next = correctInWave + 1;
@@ -129,7 +147,7 @@ export function HeroWords({ token }: { token: string }) {
       progress={progress}
       onRoundComplete={() => bumpHeroWords(token)}
     >
-      <HeroWordsInner onProgress={setProgress} />
+      <HeroWordsInner token={token} onProgress={setProgress} />
     </GameShell>
   );
 }

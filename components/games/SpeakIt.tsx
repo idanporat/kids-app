@@ -6,7 +6,7 @@ import { GameShell, useGameRewards } from "@/components/games/GameShell";
 import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew } from "@/lib/game-audio";
 import { SPEAK_ROUNDS, twemojiUrl } from "@/lib/game-data";
 import { transcriptMatchesExpected } from "@/lib/hebrew-match";
-import { bumpSpeakIt } from "@/lib/game-progress";
+import { bumpSpeakIt, recordGameAttempt } from "@/lib/game-progress";
 import { isSpeechRecognitionAvailable, listenHebrewOnce } from "@/lib/speech-recognition";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -18,7 +18,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function SpeakItInner({ onProgress }: { onProgress: (pct: number) => void }) {
+function SpeakItInner({
+  token,
+  onProgress,
+}: {
+  token: string;
+  onProgress: (pct: number) => void;
+}) {
   const { triggerStars, triggerRoundComplete } = useGameRewards();
   const indices = useMemo(() => shuffle(SPEAK_ROUNDS.map((_, i) => i)), []);
   const [cursor, setCursor] = useState(0);
@@ -71,6 +77,12 @@ function SpeakItInner({ onProgress }: { onProgress: (pct: number) => void }) {
     const ok = transcriptMatchesExpected(result.transcript, round.word, round.alternates);
 
     if (!ok) {
+      recordGameAttempt(
+        token,
+        "speak-it",
+        "wrong",
+        `צריך «${round.word}», נשמע: «${result.transcript.trim() || "…"}»`
+      );
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate(35);
@@ -79,6 +91,7 @@ function SpeakItInner({ onProgress }: { onProgress: (pct: number) => void }) {
       return;
     }
 
+    recordGameAttempt(token, "speak-it", "correct");
     playCorrectChime();
     triggerStars();
     const next = correctInWave + 1;
@@ -171,7 +184,7 @@ export function SpeakIt({ token }: { token: string }) {
       progress={progress}
       onRoundComplete={() => bumpSpeakIt(token)}
     >
-      <SpeakItInner onProgress={setProgress} />
+      <SpeakItInner token={token} onProgress={setProgress} />
     </GameShell>
   );
 }

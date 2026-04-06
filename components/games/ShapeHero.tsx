@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
 import { playCorrectChime, playSoftBuzz } from "@/lib/game-audio";
-import { bumpShapeHero } from "@/lib/game-progress";
+import { bumpShapeHero, recordGameAttempt } from "@/lib/game-progress";
 import { SHAPES, type ShapeId } from "@/lib/game-data";
 
 const SHAPE_LABEL: Record<ShapeId, string> = {
@@ -94,7 +94,13 @@ function ShapeSvg({ shape, size = 140 }: { shape: ShapeId; size?: number }) {
   }
 }
 
-function ShapeHeroInner({ onProgress }: { onProgress: (pct: number) => void }) {
+function ShapeHeroInner({
+  token,
+  onProgress,
+}: {
+  token: string;
+  onProgress: (pct: number) => void;
+}) {
   const { triggerStars, triggerRoundComplete } = useGameRewards();
   const [round, setRound] = useState(() => makeRound());
   const [correctInWave, setCorrectInWave] = useState(0);
@@ -110,6 +116,12 @@ function ShapeHeroInner({ onProgress }: { onProgress: (pct: number) => void }) {
   function handlePick(shape: ShapeId) {
     if (busy) return;
     if (shape !== round.target) {
+      recordGameAttempt(
+        token,
+        "shape-hero",
+        "wrong",
+        `נבחר ${SHAPE_LABEL[shape]} במקום ${SHAPE_LABEL[round.target]}`
+      );
       setBusy(true);
       setShakeKey((k) => k + 1);
       playSoftBuzz();
@@ -121,6 +133,7 @@ function ShapeHeroInner({ onProgress }: { onProgress: (pct: number) => void }) {
     }
 
     setBusy(true);
+    recordGameAttempt(token, "shape-hero", "correct");
     playCorrectChime();
     triggerStars();
     const next = correctInWave + 1;
@@ -177,7 +190,7 @@ export function ShapeHero({ token }: { token: string }) {
         bumpShapeHero(token);
       }}
     >
-      <ShapeHeroInner onProgress={setProgress} />
+      <ShapeHeroInner token={token} onProgress={setProgress} />
     </GameShell>
   );
 }

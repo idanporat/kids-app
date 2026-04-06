@@ -10,7 +10,9 @@ import { createDeposit } from "@/app/actions/deposits";
 import { updateAnnualInterest } from "@/app/actions/interest";
 import { formatIls } from "@/lib/format";
 import {
+  formatAttemptsLine,
   formatProgressUpdatedAt,
+  gameLabel,
   parseGameProgressFromJson,
   totalCompletedRounds,
 } from "@/lib/game-progress";
@@ -382,33 +384,80 @@ export function ParentChildCard({
 function ChildGameProgressPanel({ snapshot }: { snapshot: GameProgressSnapshot }) {
   const p = parseGameProgressFromJson(snapshot.data);
   const total = totalCompletedRounds(p);
+  const mistakesNewestFirst = [...p.recentMistakes].reverse();
   return (
     <div className="mt-3 space-y-2 text-sm">
       <p className="font-semibold text-slate-800 dark:text-slate-100">
         סה״כ סיבובים שהושלמו (ארבעת המשחקים): {total}
       </p>
-      <ul className="grid gap-1.5 text-slate-700 dark:text-slate-300">
-        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
-          <span>גיבור הצורות</span>
-          <span className="font-medium tabular-nums">{p.shapeHero.roundsCompleted} סיבובים</span>
+      <ul className="grid gap-2 text-slate-700 dark:text-slate-300">
+        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
+          <div className="flex justify-between gap-2">
+            <span>גיבור הצורות</span>
+            <span className="font-medium tabular-nums">{p.shapeHero.roundsCompleted} סיבובים</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+            {formatAttemptsLine(p.shapeHero.correctCount, p.shapeHero.wrongCount)}
+          </p>
         </li>
-        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
-          <span>זיכרון הכוחות</span>
-          <span className="font-medium tabular-nums">עד {p.powerMemory.maxPairs} זוגות</span>
+        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
+          <div className="flex justify-between gap-2">
+            <span>זיכרון הכוחות</span>
+            <span className="font-medium tabular-nums">עד {p.powerMemory.maxPairs} זוגות</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+            התאמות: {formatAttemptsLine(p.powerMemory.correctCount, p.powerMemory.wrongCount)}
+          </p>
         </li>
-        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
-          <span>מילים של גיבורים</span>
-          <span className="font-medium tabular-nums">{p.heroWords.roundsCompleted} סיבובים</span>
+        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
+          <div className="flex justify-between gap-2">
+            <span>מילים של גיבורים</span>
+            <span className="font-medium tabular-nums">{p.heroWords.roundsCompleted} סיבובים</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+            {formatAttemptsLine(p.heroWords.correctCount, p.heroWords.wrongCount)}
+          </p>
         </li>
-        <li className="flex justify-between gap-2 border-b border-slate-200/80 pb-1 dark:border-slate-600/80">
-          <span>מה שייך?</span>
-          <span className="font-medium tabular-nums">{p.categoryPick.roundsCompleted} סיבובים</span>
+        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
+          <div className="flex justify-between gap-2">
+            <span>מה שייך?</span>
+            <span className="font-medium tabular-nums">{p.categoryPick.roundsCompleted} סיבובים</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+            {formatAttemptsLine(p.categoryPick.correctCount, p.categoryPick.wrongCount)}
+          </p>
         </li>
-        <li className="flex justify-between gap-2">
-          <span>אומרים בקול</span>
-          <span className="font-medium tabular-nums">{p.speakIt.roundsCompleted} סיבובים</span>
+        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
+          <div className="flex justify-between gap-2">
+            <span>אומרים בקול</span>
+            <span className="font-medium tabular-nums">{p.speakIt.roundsCompleted} סיבובים</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+            {formatAttemptsLine(p.speakIt.correctCount, p.speakIt.wrongCount)}
+          </p>
         </li>
       </ul>
+      <details className="rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-2 dark:border-slate-600 dark:bg-slate-800/50">
+        <summary className="cursor-pointer text-sm font-medium text-slate-800 dark:text-slate-200">
+          במה טעו? — פירוט אחרון
+          {mistakesNewestFirst.length > 0 ? ` (${mistakesNewestFirst.length})` : ""}
+        </summary>
+        {mistakesNewestFirst.length === 0 ? (
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            כאן יופיע פירוט (למשל איזו צורה נבחרה, איזו מילה, מה נשמע במיקרופון) אחרי שהילד טועה במשחק — רק מניסיונות אחרי עדכון האפליקציה.
+          </p>
+        ) : (
+          <ol className="mt-2 max-h-48 list-decimal space-y-2 overflow-y-auto pr-5 text-xs text-slate-700 dark:text-slate-300">
+            {mistakesNewestFirst.map((m, i) => (
+              <li key={`${m.at}-${i}`} className="leading-snug">
+                <span className="font-medium text-slate-800 dark:text-slate-100">{gameLabel(m.game)}</span>
+                <span className="text-slate-500 dark:text-slate-500"> · {formatProgressUpdatedAt(m.at)}</span>
+                <span className="mt-0.5 block text-slate-600 dark:text-slate-400">{m.detail}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </details>
       <p className="text-xs text-slate-500 dark:text-slate-400">
         עודכן בשרת: {formatProgressUpdatedAt(snapshot.updatedAt)}
       </p>

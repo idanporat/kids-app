@@ -63,6 +63,11 @@ export type WordRound = {
   correct: string;
   /** Three image filenames — includes correct; shuffled in UI */
   options: [string, string, string];
+  /**
+   * Other filenames that also count as correct (rare), e.g. two Twemoji both match
+   * the word in everyday Hebrew. Prefer fixing `options` distractors first.
+   */
+  acceptAlso?: string[];
 };
 
 /**
@@ -164,8 +169,8 @@ export const WORD_ROUNDS: WordRound[] = [
   { word: "ברוקולי", correct: "1f966.png", options: ["1f966.png", "1f955.png", "1f345.png"] },
   { word: "תירס", correct: "1f33d.png", options: ["1f33d.png", "1f955.png", "1f966.png"] },
   { word: "פלפל", correct: "1f336.png", options: ["1f336.png", "1f345.png", "1f955.png"] },
-  { word: "לחם", correct: "1f35e.png", options: ["1f35e.png", "1f956.png", "1f35f.png"] },
-  { word: "באגט", correct: "1f956.png", options: ["1f956.png", "1f35e.png", "1f35f.png"] },
+  { word: "לחם", correct: "1f35e.png", options: ["1f35e.png", "1f34e.png", "1f355.png"] },
+  { word: "באגט", correct: "1f956.png", options: ["1f956.png", "1f35d.png", "1f363.png"] },
   { word: "צ׳יפס", correct: "1f35f.png", options: ["1f35f.png", "1f35d.png", "1f35e.png"] },
   { word: "ספגטי", correct: "1f35d.png", options: ["1f35d.png", "1f35f.png", "1f35e.png"] },
   { word: "פיצה", correct: "1f355.png", options: ["1f355.png", "1f35d.png", "1f35f.png"] },
@@ -173,13 +178,13 @@ export const WORD_ROUNDS: WordRound[] = [
   { word: "טאקו", correct: "1f32e.png", options: ["1f32e.png", "1f32f.png", "1f354.png"] },
   { word: "בוריטו", correct: "1f32f.png", options: ["1f32f.png", "1f32e.png", "1f355.png"] },
   { word: "סושי", correct: "1f363.png", options: ["1f363.png", "1f364.png", "1f365.png"] },
-  { word: "פרעצל", correct: "1f968.png", options: ["1f968.png", "1f35e.png", "1f956.png"] },
-  { word: "עוגייה", correct: "1f36a.png", options: ["1f36a.png", "1f36b.png", "1f370.png"] },
-  { word: "שוקולד", correct: "1f36b.png", options: ["1f36b.png", "1f36a.png", "1f366.png"] },
-  { word: "עוגה", correct: "1f370.png", options: ["1f370.png", "1f382.png", "1f967.png"] },
-  { word: "יום הולדת", correct: "1f382.png", options: ["1f382.png", "1f370.png", "1f368.png"] },
-  { word: "גלידה", correct: "1f366.png", options: ["1f366.png", "1f368.png", "1f367.png"] },
-  { word: "סופגנייה", correct: "1f369.png", options: ["1f369.png", "1f368.png", "1f366.png"] },
+  { word: "פרעצל", correct: "1f968.png", options: ["1f968.png", "1f34e.png", "1f697.png"] },
+  { word: "עוגייה", correct: "1f36a.png", options: ["1f36a.png", "1f697.png", "1f436.png"] },
+  { word: "שוקולד", correct: "1f36b.png", options: ["1f36b.png", "1f33c.png", "1f41f.png"] },
+  { word: "עוגה", correct: "1f370.png", options: ["1f370.png", "1f697.png", "1f41f.png"] },
+  { word: "יום הולדת", correct: "1f382.png", options: ["1f382.png", "1f697.png", "1f436.png"] },
+  { word: "גלידה", correct: "1f366.png", options: ["1f366.png", "1f697.png", "1f414.png"] },
+  { word: "סופגנייה", correct: "1f369.png", options: ["1f369.png", "1f68c.png", "1f333.png"] },
   { word: "פופקורן", correct: "1f37f.png", options: ["1f37f.png", "1f35f.png", "1f37a.png"] },
   { word: "גבינה", correct: "1f9c0.png", options: ["1f9c0.png", "1f35e.png", "1f95a.png"] },
   { word: "ביצה", correct: "1f95a.png", options: ["1f95a.png", "1f373.png", "1f9c0.png"] },
@@ -190,8 +195,8 @@ export const WORD_ROUNDS: WordRound[] = [
   { word: "בירה", correct: "1f37a.png", options: ["1f37a.png", "1f377.png", "1f378.png"] },
   { word: "יין", correct: "1f377.png", options: ["1f377.png", "1f37a.png", "1f378.png"] },
   { word: "קוקטייל", correct: "1f378.png", options: ["1f378.png", "1f377.png", "1f379.png"] },
-  { word: "ממתק", correct: "1f36c.png", options: ["1f36c.png", "1f36d.png", "1f36b.png"] },
-  { word: "סוכריה", correct: "1f36d.png", options: ["1f36d.png", "1f36c.png", "1f36b.png"] },
+  { word: "ממתק", correct: "1f36c.png", options: ["1f36c.png", "1f697.png", "1f3e0.png"] },
+  { word: "סוכריה", correct: "1f36d.png", options: ["1f36d.png", "1f68c.png", "1f333.png"] },
   { word: "דבש", correct: "1f36f.png", options: ["1f36f.png", "1f36c.png", "1f95b.png"] },
   // גוף
   { word: "עין", correct: "1f441.png", options: ["1f441.png", "1f445.png", "1f442.png"] },

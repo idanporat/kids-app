@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
 import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew, unlockGameAudio } from "@/lib/game-audio";
-import { bumpCategoryPick } from "@/lib/game-progress";
+import { bumpCategoryPick, recordGameAttempt } from "@/lib/game-progress";
 import { CATEGORY_ROUNDS, twemojiUrl } from "@/lib/game-data";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -16,7 +16,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function CategoryPickInner({ onProgress }: { onProgress: (pct: number) => void }) {
+function CategoryPickInner({
+  token,
+  onProgress,
+}: {
+  token: string;
+  onProgress: (pct: number) => void;
+}) {
   const { triggerStars, triggerRoundComplete } = useGameRewards();
   const indices = useMemo(() => shuffle(CATEGORY_ROUNDS.map((_, i) => i)), []);
   const [cursor, setCursor] = useState(0);
@@ -58,6 +64,12 @@ function CategoryPickInner({ onProgress }: { onProgress: (pct: number) => void }
   function handlePick(file: string) {
     if (busy) return;
     if (file !== round.correct) {
+      recordGameAttempt(
+        token,
+        "category-pick",
+        "wrong",
+        `נושא «${round.category}» — נבחרה תמונה לא נכונה`
+      );
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate(35);
@@ -65,6 +77,7 @@ function CategoryPickInner({ onProgress }: { onProgress: (pct: number) => void }
       return;
     }
     setBusy(true);
+    recordGameAttempt(token, "category-pick", "correct");
     playCorrectChime();
     triggerStars();
     const next = correctInWave + 1;
@@ -129,7 +142,7 @@ export function CategoryPick({ token }: { token: string }) {
       progress={progress}
       onRoundComplete={() => bumpCategoryPick(token)}
     >
-      <CategoryPickInner onProgress={setProgress} />
+      <CategoryPickInner token={token} onProgress={setProgress} />
     </GameShell>
   );
 }

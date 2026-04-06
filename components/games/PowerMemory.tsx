@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
 import { playCorrectChime, playRoundComplete, playSoftBuzz } from "@/lib/game-audio";
-import { updatePowerMemory } from "@/lib/game-progress";
+import { recordGameAttempt, updatePowerMemory } from "@/lib/game-progress";
 import { MEMORY_SYMBOLS } from "@/lib/game-data";
 
 type Card = {
@@ -82,6 +82,7 @@ function PowerMemoryInner({
       const second = cards.find((c) => c.id === id)!;
 
       if (first.symbol === second.symbol) {
+        recordGameAttempt(token, "power-memory", "correct");
         playCorrectChime();
         triggerStars();
         setCards((prev) => {
@@ -98,6 +99,12 @@ function PowerMemoryInner({
         return;
       }
 
+      recordGameAttempt(
+        token,
+        "power-memory",
+        "wrong",
+        `לא התאים: ${first.symbol} ו-${second.symbol}`
+      );
       playSoftBuzz();
       if (typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate(30);
