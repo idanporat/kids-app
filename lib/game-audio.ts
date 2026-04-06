@@ -195,7 +195,7 @@ export function playRoundComplete() {
   playFromPool(fanfareDataUrl, fanfarePool);
 }
 
-export function speakHebrew(text: string): Promise<void> {
+export function speakHebrew(text: string, opts?: { rate?: number }): Promise<void> {
   return new Promise((resolve) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
       resolve();
@@ -206,7 +206,7 @@ export function speakHebrew(text: string): Promise<void> {
     const trySpeak = () => {
       const u = new SpeechSynthesisUtterance(text);
       u.lang = "he-IL";
-      u.rate = 0.92;
+      u.rate = opts?.rate ?? 0.92;
       u.pitch = 1;
 
       const voices = window.speechSynthesis.getVoices();
@@ -265,7 +265,7 @@ export function playTwemojiSound(file: string): boolean {
   }
 }
 
-/** Play synthesized SFX for the correct emoji, or Hebrew TTS if unmapped. */
+/** צליל סינתזה לפי האימוג׳י הנכון; אם אין מיפוי — הקראת המילה ב־TTS. */
 export async function playSoundIdHint(file: string, speakFallback: string): Promise<void> {
   unlockGameAudio();
   const ctx = getCtx();

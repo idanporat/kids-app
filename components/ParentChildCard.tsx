@@ -388,7 +388,7 @@ function ChildGameProgressPanel({ snapshot }: { snapshot: GameProgressSnapshot }
   return (
     <div className="mt-3 space-y-2 text-sm">
       <p className="font-semibold text-slate-800 dark:text-slate-100">
-        סה״כ סיבובים שהושלמו (ארבעת המשחקים): {total}
+        סה״כ סיבובים שהושלמו (המשחקים הראשיים): {total}
       </p>
       <ul className="grid gap-2 text-slate-700 dark:text-slate-300">
         <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
@@ -411,29 +411,11 @@ function ChildGameProgressPanel({ snapshot }: { snapshot: GameProgressSnapshot }
         </li>
         <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
           <div className="flex justify-between gap-2">
-            <span>מילים של גיבורים</span>
-            <span className="font-medium tabular-nums">{p.heroWords.roundsCompleted} סיבובים</span>
-          </div>
-          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-            {formatAttemptsLine(p.heroWords.correctCount, p.heroWords.wrongCount)}
-          </p>
-        </li>
-        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
-          <div className="flex justify-between gap-2">
             <span>מה שייך?</span>
             <span className="font-medium tabular-nums">{p.categoryPick.roundsCompleted} סיבובים</span>
           </div>
           <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
             {formatAttemptsLine(p.categoryPick.correctCount, p.categoryPick.wrongCount)}
-          </p>
-        </li>
-        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
-          <div className="flex justify-between gap-2">
-            <span>אומרים בקול</span>
-            <span className="font-medium tabular-nums">{p.speakIt.roundsCompleted} סיבובים</span>
-          </div>
-          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-            {formatAttemptsLine(p.speakIt.correctCount, p.speakIt.wrongCount)}
           </p>
         </li>
       </ul>

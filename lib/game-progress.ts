@@ -22,17 +22,7 @@ export type PowerMemoryProgress = {
   correctCount: number;
   wrongCount: number;
 };
-export type HeroWordsProgress = {
-  roundsCompleted: number;
-  correctCount: number;
-  wrongCount: number;
-};
 export type CategoryPickProgress = {
-  roundsCompleted: number;
-  correctCount: number;
-  wrongCount: number;
-};
-export type SpeakItProgress = {
   roundsCompleted: number;
   correctCount: number;
   wrongCount: number;
@@ -48,9 +38,7 @@ export type ModuleProgress = {
 export type AllGameProgress = {
   shapeHero: ShapeHeroProgress;
   powerMemory: PowerMemoryProgress;
-  heroWords: HeroWordsProgress;
   categoryPick: CategoryPickProgress;
-  speakIt: SpeakItProgress;
   associations: ModuleProgress;
   environments: ModuleProgress;
   shapeMatch: ModuleProgress;
@@ -92,9 +80,7 @@ const moduleDefault = (): ModuleProgress => ({
 const defaultProgress = (): AllGameProgress => ({
   shapeHero: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
   powerMemory: { maxPairs: 2, correctCount: 0, wrongCount: 0 },
-  heroWords: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
   categoryPick: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
-  speakIt: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
   associations: moduleDefault(),
   environments: moduleDefault(),
   shapeMatch: moduleDefault(),
@@ -140,9 +126,13 @@ function normMistakes(raw: unknown): ProgressMistake[] {
 function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined): AllGameProgress {
   const base = defaultProgress();
   if (!parsed || typeof parsed !== "object") return base;
+  const { heroWords: _omitHeroWords, speakIt: _omitSpeakIt, ...parsedRest } = parsed as Partial<AllGameProgress> & {
+    heroWords?: unknown;
+    speakIt?: unknown;
+  };
   return {
     ...base,
-    ...parsed,
+    ...parsedRest,
     shapeHero: {
       roundsCompleted: parsed.shapeHero?.roundsCompleted ?? base.shapeHero.roundsCompleted,
       correctCount: parsed.shapeHero?.correctCount ?? base.shapeHero.correctCount,
@@ -153,20 +143,10 @@ function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined)
       correctCount: parsed.powerMemory?.correctCount ?? base.powerMemory.correctCount,
       wrongCount: parsed.powerMemory?.wrongCount ?? base.powerMemory.wrongCount,
     },
-    heroWords: {
-      roundsCompleted: parsed.heroWords?.roundsCompleted ?? base.heroWords.roundsCompleted,
-      correctCount: parsed.heroWords?.correctCount ?? base.heroWords.correctCount,
-      wrongCount: parsed.heroWords?.wrongCount ?? base.heroWords.wrongCount,
-    },
     categoryPick: {
       roundsCompleted: parsed.categoryPick?.roundsCompleted ?? base.categoryPick.roundsCompleted,
       correctCount: parsed.categoryPick?.correctCount ?? base.categoryPick.correctCount,
       wrongCount: parsed.categoryPick?.wrongCount ?? base.categoryPick.wrongCount,
-    },
-    speakIt: {
-      roundsCompleted: parsed.speakIt?.roundsCompleted ?? base.speakIt.roundsCompleted,
-      correctCount: parsed.speakIt?.correctCount ?? base.speakIt.correctCount,
-      wrongCount: parsed.speakIt?.wrongCount ?? base.speakIt.wrongCount,
     },
     associations: {
       roundsCompleted: parsed.associations?.roundsCompleted ?? base.associations.roundsCompleted,
@@ -300,9 +280,7 @@ export function saveProgress(token: string, next: Partial<AllGameProgress>) {
     ...next,
     shapeHero: { ...prev.shapeHero, ...next.shapeHero },
     powerMemory: { ...prev.powerMemory, ...next.powerMemory },
-    heroWords: { ...prev.heroWords, ...next.heroWords },
     categoryPick: { ...prev.categoryPick, ...next.categoryPick },
-    speakIt: { ...prev.speakIt, ...next.speakIt },
     associations: { ...prev.associations, ...next.associations },
     environments: { ...prev.environments, ...next.environments },
     shapeMatch: { ...prev.shapeMatch, ...next.shapeMatch },
@@ -346,9 +324,7 @@ export function recordGameAttempt(
 
   let shapeHero = prev.shapeHero;
   let powerMemory = prev.powerMemory;
-  let heroWords = prev.heroWords;
   let categoryPick = prev.categoryPick;
-  let speakIt = prev.speakIt;
 
   switch (game) {
     case "shape-hero": {
@@ -361,19 +337,9 @@ export function recordGameAttempt(
       powerMemory = { ...prev.powerMemory, correctCount: correct, wrongCount: wrong };
       break;
     }
-    case "hero-words": {
-      const { correct, wrong } = bump(prev.heroWords.correctCount, prev.heroWords.wrongCount);
-      heroWords = { ...prev.heroWords, correctCount: correct, wrongCount: wrong };
-      break;
-    }
     case "category-pick": {
       const { correct, wrong } = bump(prev.categoryPick.correctCount, prev.categoryPick.wrongCount);
       categoryPick = { ...prev.categoryPick, correctCount: correct, wrongCount: wrong };
-      break;
-    }
-    case "speak-it": {
-      const { correct, wrong } = bump(prev.speakIt.correctCount, prev.speakIt.wrongCount);
-      speakIt = { ...prev.speakIt, correctCount: correct, wrongCount: wrong };
       break;
     }
     default: {
@@ -405,9 +371,7 @@ export function recordGameAttempt(
   saveProgress(token, {
     shapeHero,
     powerMemory,
-    heroWords,
     categoryPick,
-    speakIt,
     recentMistakes,
   });
 }
@@ -425,24 +389,10 @@ export function updatePowerMemory(token: string, pairs: number) {
   saveProgress(token, { powerMemory: { ...p.powerMemory, maxPairs: pairs } });
 }
 
-export function bumpHeroWords(token: string) {
-  const p = loadProgress(token);
-  saveProgress(token, {
-    heroWords: { ...p.heroWords, roundsCompleted: p.heroWords.roundsCompleted + 1 },
-  });
-}
-
 export function bumpCategoryPick(token: string) {
   const p = loadProgress(token);
   saveProgress(token, {
     categoryPick: { ...p.categoryPick, roundsCompleted: p.categoryPick.roundsCompleted + 1 },
-  });
-}
-
-export function bumpSpeakIt(token: string) {
-  const p = loadProgress(token);
-  saveProgress(token, {
-    speakIt: { ...p.speakIt, roundsCompleted: p.speakIt.roundsCompleted + 1 },
   });
 }
 
@@ -474,9 +424,7 @@ export function formatProgressSummary(p: AllGameProgress): string {
   return [
     `גיבור הצורות: ${p.shapeHero.roundsCompleted} סיבובים`,
     `זיכרון הכוחות: עד ${p.powerMemory.maxPairs} זוגות`,
-    `מילים: ${p.heroWords.roundsCompleted} סיבובים`,
     `מה שייך: ${p.categoryPick.roundsCompleted} סיבובים`,
-    `אומרים בקול: ${p.speakIt.roundsCompleted} סיבובים`,
     `משחקי מודולים: ${moduleRounds} סיבובים`,
   ].join(" · ");
 }
@@ -484,9 +432,7 @@ export function formatProgressSummary(p: AllGameProgress): string {
 export function totalCompletedRounds(p: AllGameProgress): number {
   return (
     p.shapeHero.roundsCompleted +
-    p.heroWords.roundsCompleted +
     p.categoryPick.roundsCompleted +
-    p.speakIt.roundsCompleted +
     p.associations.roundsCompleted +
     p.environments.roundsCompleted +
     p.shapeMatch.roundsCompleted +
@@ -517,12 +463,8 @@ export function gameLabel(id: GameId): string {
       return "גיבור הצורות";
     case "power-memory":
       return "זיכרון הכוחות";
-    case "hero-words":
-      return "מילים של גיבורים";
     case "category-pick":
       return "מה שייך?";
-    case "speak-it":
-      return "אומרים בקול";
     case "associations":
       return "התאמות";
     case "environments":

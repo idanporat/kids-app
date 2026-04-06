@@ -33,6 +33,12 @@ function OppositesInner({
   const round = OPPOSITE_ROUNDS[indices[cursor % indices.length]];
   const shuffledOptions = useMemo(() => shuffle([...round.options]), [round]);
 
+  function labelForImageFile(file: string): string {
+    if (file === round.correct) return round.correctLabel;
+    if (file === round.promptImage) return round.promptLabel;
+    return round.distractorLabel;
+  }
+
   const waveProgress = (correctInWave / 5) * 100;
   useEffect(() => {
     onProgress(waveProgress);
@@ -81,25 +87,30 @@ function OppositesInner({
         </button>
       </div>
 
-      <div className="rounded-3xl border-4 border-indigo-200 bg-indigo-50/80 px-10 py-8 dark:border-indigo-700 dark:bg-indigo-950/30">
+      <div className="flex flex-col items-center gap-2 rounded-3xl border-4 border-indigo-200 bg-indigo-50/80 px-6 py-6 dark:border-indigo-700 dark:bg-indigo-950/30 sm:px-10 sm:py-8">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={twemojiUrl(round.promptImage)}
-          alt=""
+          alt={round.promptLabel}
           width={140}
           height={140}
           className="mx-auto h-[140px] w-[140px] object-contain"
         />
+        <p className="max-w-[16rem] text-center text-xl font-semibold leading-snug text-indigo-950 dark:text-indigo-100">
+          {round.promptLabel}
+        </p>
+        <p className="text-center text-sm text-slate-600 dark:text-slate-400">מצאו את ההפך של המילה למעלה</p>
       </div>
 
-      <div className="grid w-full max-w-lg grid-cols-3 gap-4">
+      <div className="grid w-full max-w-lg grid-cols-1 gap-4 sm:grid-cols-3">
         {shuffledOptions.map((file) => (
           <button
             key={`${cursor}-${file}`}
             type="button"
             disabled={busy}
             onClick={() => handlePick(file)}
-            className="flex min-h-[104px] min-w-[104px] items-center justify-center rounded-3xl border-4 border-slate-200 bg-white p-2 shadow-md transition active:scale-95 disabled:opacity-70 dark:border-slate-600 dark:bg-slate-900"
+            aria-label={labelForImageFile(file)}
+            className="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-3xl border-4 border-slate-200 bg-white p-3 shadow-md transition active:scale-95 disabled:opacity-70 dark:border-slate-600 dark:bg-slate-900"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -109,6 +120,9 @@ function OppositesInner({
               height={100}
               className="h-[100px] w-[100px] object-contain"
             />
+            <span className="max-w-[9rem] text-center text-base font-medium leading-tight text-slate-800 dark:text-slate-100">
+              {labelForImageFile(file)}
+            </span>
           </button>
         ))}
       </div>

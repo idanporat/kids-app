@@ -12,12 +12,8 @@ function cardAccent(g: GameMeta): string {
       return "border-amber-300 bg-gradient-to-l from-amber-100 to-orange-100 dark:from-amber-950/40 dark:to-orange-950/40 dark:border-amber-800";
     case "power-memory":
       return "border-violet-300 bg-gradient-to-l from-violet-100 to-indigo-100 dark:from-violet-950/40 dark:to-indigo-950/40 dark:border-violet-800";
-    case "hero-words":
-      return "border-sky-300 bg-gradient-to-l from-sky-100 to-blue-100 dark:from-sky-950/40 dark:to-blue-950/40 dark:border-sky-800";
     case "category-pick":
       return "border-emerald-300 bg-gradient-to-l from-emerald-100 to-teal-100 dark:from-emerald-950/40 dark:to-teal-950/40 dark:border-emerald-800";
-    case "speak-it":
-      return "border-rose-300 bg-gradient-to-l from-rose-100 to-pink-100 dark:from-rose-950/40 dark:to-pink-950/40 dark:border-rose-800";
     default:
       return "border-slate-200 bg-[var(--card)] dark:border-slate-600";
   }

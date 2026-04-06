@@ -6,7 +6,6 @@ import { CategoryPick } from "@/components/games/CategoryPick";
 import { ContextMatchGame } from "@/components/games/ContextMatchGame";
 import { CountingGame } from "@/components/games/CountingGame";
 import { EnvironmentsGame } from "@/components/games/EnvironmentsGame";
-import { HeroWords } from "@/components/games/HeroWords";
 import { OppositesGame } from "@/components/games/OppositesGame";
 import { PhoneticsGame } from "@/components/games/PhoneticsGame";
 import { PowerMemory } from "@/components/games/PowerMemory";
@@ -15,7 +14,6 @@ import { SequencesGame } from "@/components/games/SequencesGame";
 import { ShapeHero } from "@/components/games/ShapeHero";
 import { ShapeMatchGame } from "@/components/games/ShapeMatchGame";
 import { SoundIdGame } from "@/components/games/SoundIdGame";
-import { SpeakIt } from "@/components/games/SpeakIt";
 import { VisualClosureGame } from "@/components/games/VisualClosureGame";
 import type { GameId } from "@/lib/game-data";
 
@@ -25,12 +23,8 @@ export function GamePlayClient({ token, gameId }: { token: string; gameId: GameI
       return <ShapeHero token={token} />;
     case "power-memory":
       return <PowerMemory token={token} />;
-    case "hero-words":
-      return <HeroWords token={token} />;
     case "category-pick":
       return <CategoryPick token={token} />;
-    case "speak-it":
-      return <SpeakIt token={token} />;
     case "associations":
       return <AssociationsGame token={token} />;
     case "environments":

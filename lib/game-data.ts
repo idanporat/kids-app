@@ -3,9 +3,7 @@
 export const GAME_IDS = [
   "shape-hero",
   "power-memory",
-  "hero-words",
   "category-pick",
-  "speak-it",
   "associations",
   "environments",
   "shape-match",
@@ -43,19 +41,9 @@ export const GAME_LIST: GameMeta[] = [
     emoji: "🛡️",
   },
   {
-    id: "hero-words",
-    title: "מילים של גיבורים",
-    emoji: "🦸",
-  },
-  {
     id: "category-pick",
     title: "מה שייך?",
     emoji: "🏷️",
-  },
-  {
-    id: "speak-it",
-    title: "אומרים בקול",
-    emoji: "🎤",
   },
   {
     id: "associations",
@@ -491,41 +479,6 @@ export const CATEGORY_ROUNDS: CategoryRound[] = [
   { category: "חיה", correct: "1f992.png", options: ["1f992.png", "1f35f.png", "1f4fa.png"] },
   { category: "חיה", correct: "1f998.png", options: ["1f998.png", "1f34c.png", "1f697.png"] },
   { category: "חיה", correct: "1f99b.png", options: ["1f99b.png", "1f355.png", "1f3e0.png"] },
-];
-
-/** מילה אחת + תמונה — הילד אומר את המילה למיקרופון */
-export type SpeakRound = {
-  word: string;
-  image: string;
-  /** וריאציות אופציונליות לזיהוי דיבור */
-  alternates?: string[];
-};
-
-export const SPEAK_ROUNDS: SpeakRound[] = [
-  { word: "כלב", image: "1f436.png" },
-  { word: "חתול", image: "1f431.png" },
-  { word: "ארנב", image: "1f430.png" },
-  { word: "דג", image: "1f41f.png" },
-  { word: "תפוח", image: "1f34e.png" },
-  { word: "בננה", image: "1f34c.png" },
-  { word: "עין", image: "1f441.png" },
-  { word: "שמש", image: "2600.png" },
-  { word: "פרח", image: "1f33c.png" },
-  { word: "ענן", image: "2601.png" },
-  { word: "בית", image: "1f3e0.png" },
-  { word: "מכונית", image: "1f697.png" },
-  { word: "כדור", image: "26bd.png" },
-  { word: "עוף", image: "1f414.png" },
-  { word: "גזר", image: "1f955.png" },
-  { word: "ירח", image: "1f319.png" },
-  { word: "כוכב", image: "2b50.png" },
-  { word: "עץ", image: "1f333.png" },
-  { word: "לב", image: "1f496.png" },
-  { word: "יד", image: "1f590.png" },
-  { word: "אדום", image: "1f534.png" },
-  { word: "כחול", image: "1f535.png" },
-  { word: "ירוק", image: "1f7e2.png" },
-  { word: "פיל", image: "1f418.png" },
 ];
 
 /** Hero / power symbols for memory (pairs are two identical emojis) */
