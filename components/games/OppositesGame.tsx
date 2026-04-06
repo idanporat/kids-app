@@ -41,7 +41,7 @@ function OppositesInner({
   function replay() {
     if (busy) return;
     resumeAudioContext();
-    void speakHebrew("בחרו את ההפך של מה שמוצג בתמונה");
+    void speakHebrew("מצאו את ההפך לתמונה למעלה");
   }
 
   function handlePick(file: string) {

@@ -41,7 +41,7 @@ function RhymesInner({
   function replay() {
     if (busy) return;
     resumeAudioContext();
-    void speakHebrew("בחרו את התמונה שחורזת עם מה שמוצג למעלה");
+    void speakHebrew("מצאו תמונה שחורזת עם התמונה למעלה");
   }
 
   function handlePick(file: string) {

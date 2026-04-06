@@ -257,7 +257,7 @@ export const VISUAL_CLOSURE_ROUNDS: VisualClosureRound[] = VISUAL_CLOSURE_FILES.
   };
 });
 
-/** G7 — הפכים (תמונת גירוי + בחירת התמונה ההפוכה; בלי מלל על המסך) */
+/** G7 — הפכים (גיל ~5: הפכים תמונתיים פשוטים; תמונת גירוי + בחירה; בלי מלל על המסך) */
 export type OppositeRound = {
   /** תמונה אחת בצד הזוג — בוחרים את ההפך שלה */
   promptImage: string;
@@ -265,87 +265,190 @@ export type OppositeRound = {
   options: [string, string, string];
 };
 
+/**
+ * 17 זוגות × שני כיוונים — רק דברים שילד בן 5 מכיר מהחיים (מזג, כיוון, חיות, אוכל).
+ * בלי סימוני מתמטיקה/טלפון קווי/וי־איקס — הוחלפו ברועש־שקט, חם־קר לאכול, גשם־שמש.
+ * לכל סיבוב: `options` = [תשובה נכונה, תמונת הגירוי, מסיח] — ה־UI מערבב.
+ */
 export const OPPOSITE_ROUNDS: OppositeRound[] = [
-  { promptImage: "1f418.png", correct: "1f41d.png", options: ["1f41d.png", "1f418.png", "1f433.png"] },
-  { promptImage: "1f41d.png", correct: "1f418.png", options: ["1f418.png", "1f41d.png", "1f430.png"] },
-  { promptImage: "1f42e.png", correct: "1f40d.png", options: ["1f40d.png", "1f42e.png", "1f41f.png"] },
-  { promptImage: "1f40d.png", correct: "1f42e.png", options: ["1f42e.png", "1f40d.png", "1f418.png"] },
-  { promptImage: "1f3d7.png", correct: "1fab9.png", options: ["1fab9.png", "1f3d7.png", "1f4d5.png"] },
-  { promptImage: "1fab9.png", correct: "1f3d7.png", options: ["1f3d7.png", "1fab9.png", "1f4d5.png"] },
+  /* יום ↔ לילה */
+  { promptImage: "2600.png", correct: "1f319.png", options: ["1f319.png", "2600.png", "2b50.png"] },
+  { promptImage: "1f319.png", correct: "2600.png", options: ["2600.png", "1f319.png", "1f31f.png"] },
+  /* חם ↔ קר (אש ↔ שלג) */
   { promptImage: "1f525.png", correct: "2744.png", options: ["2744.png", "1f525.png", "2600.png"] },
-  { promptImage: "2744.png", correct: "2600.png", options: ["2600.png", "2744.png", "1f327.png"] },
-  { promptImage: "2600.png", correct: "1f319.png", options: ["1f319.png", "2600.png", "26c5.png"] },
-  { promptImage: "1f319.png", correct: "2600.png", options: ["2600.png", "1f319.png", "2b50.png"] },
-  { promptImage: "1f430.png", correct: "1f422.png", options: ["1f422.png", "1f430.png", "1f40c.png"] },
-  { promptImage: "1f422.png", correct: "1f430.png", options: ["1f430.png", "1f422.png", "1f3c3.png"] },
-  { promptImage: "1f4d6.png", correct: "1f4d2.png", options: ["1f4d2.png", "1f4d6.png", "1f4d5.png"] },
-  { promptImage: "1f4d2.png", correct: "1f4d6.png", options: ["1f4d6.png", "1f4d2.png", "1f4da.png"] },
-  { promptImage: "1f37d.png", correct: "1f963.png", options: ["1f963.png", "1f37d.png", "1f37c.png"] },
-  { promptImage: "1f963.png", correct: "1f37d.png", options: ["1f37d.png", "1f963.png", "1f37c.png"] },
-  { promptImage: "260e.png", correct: "1f4f1.png", options: ["1f4f1.png", "260e.png", "1f4bb.png"] },
-  { promptImage: "1f4f1.png", correct: "260e.png", options: ["260e.png", "1f4f1.png", "1f4bb.png"] },
-  { promptImage: "1f6d1.png", correct: "1f697.png", options: ["1f697.png", "1f6d1.png", "1f69a.png"] },
-  { promptImage: "1f697.png", correct: "1f6d1.png", options: ["1f6d1.png", "1f697.png", "1f68c.png"] },
-  { promptImage: "1faa8.png", correct: "1f9b8.png", options: ["1f9b8.png", "1faa8.png", "1f9b9.png"] },
-  { promptImage: "1f9b8.png", correct: "1faa8.png", options: ["1faa8.png", "1f9b8.png", "1f9b9.png"] },
-  { promptImage: "1f4bb.png", correct: "1f6cb.png", options: ["1f6cb.png", "1f4bb.png", "1f3ae.png"] },
-  { promptImage: "1f6cb.png", correct: "1f4bb.png", options: ["1f4bb.png", "1f6cb.png", "1f3ae.png"] },
+  { promptImage: "2744.png", correct: "1f525.png", options: ["1f525.png", "2744.png", "1f327.png"] },
+  /* למעלה ↔ למטה */
   { promptImage: "2b06.png", correct: "2b07.png", options: ["2b07.png", "2b06.png", "27a1.png"] },
-  { promptImage: "2b07.png", correct: "2b06.png", options: ["2b06.png", "2b07.png", "27a1.png"] },
+  { promptImage: "2b07.png", correct: "2b06.png", options: ["2b06.png", "2b07.png", "2b05.png"] },
+  /* שמאל ↔ ימין */
   { promptImage: "2b05.png", correct: "27a1.png", options: ["27a1.png", "2b05.png", "2b06.png"] },
-  { promptImage: "27a1.png", correct: "2b05.png", options: ["2b05.png", "27a1.png", "2b06.png"] },
-  { promptImage: "1f6aa.png", correct: "1f512.png", options: ["1f512.png", "1f6aa.png", "1f510.png"] },
+  { promptImage: "27a1.png", correct: "2b05.png", options: ["2b05.png", "27a1.png", "2b07.png"] },
+  /* פתוח ↔ נעול */
+  { promptImage: "1f6aa.png", correct: "1f512.png", options: ["1f512.png", "1f6aa.png", "1f4c4.png"] },
   { promptImage: "1f512.png", correct: "1f6aa.png", options: ["1f6aa.png", "1f512.png", "1f510.png"] },
+  /* רועש ↔ שקט (רמקול) */
+  { promptImage: "1f50a.png", correct: "1f507.png", options: ["1f507.png", "1f50a.png", "1f508.png"] },
+  { promptImage: "1f507.png", correct: "1f50a.png", options: ["1f50a.png", "1f507.png", "1f509.png"] },
+  /* מבוגר ↔ תינוק */
+  { promptImage: "1f474.png", correct: "1f476.png", options: ["1f476.png", "1f474.png", "1f466.png"] },
+  { promptImage: "1f476.png", correct: "1f474.png", options: ["1f474.png", "1f476.png", "1f467.png"] },
+  /* אגודל למעלה ↔ למטה */
+  { promptImage: "1f44d.png", correct: "1f44e.png", options: ["1f44e.png", "1f44d.png", "1f44c.png"] },
+  { promptImage: "1f44e.png", correct: "1f44d.png", options: ["1f44d.png", "1f44e.png", "1f44a.png"] },
+  /* שמח ↔ עצוב */
+  { promptImage: "1f603.png", correct: "1f641.png", options: ["1f641.png", "1f603.png", "1f610.png"] },
+  { promptImage: "1f641.png", correct: "1f603.png", options: ["1f603.png", "1f641.png", "1f615.png"] },
+  /* משקה חם ↔ גלידה (חם ↔ קר לאכול) */
+  { promptImage: "2615.png", correct: "1f366.png", options: ["1f366.png", "2615.png", "1f375.png"] },
+  { promptImage: "1f366.png", correct: "2615.png", options: ["2615.png", "1f366.png", "1f9c3.png"] },
+  /* גשם ↔ שמש (עם פנים) */
+  { promptImage: "1f327.png", correct: "1f31e.png", options: ["1f31e.png", "1f327.png", "2601.png"] },
+  { promptImage: "1f31e.png", correct: "1f327.png", options: ["1f327.png", "1f31e.png", "2b50.png"] },
+  /* אדום ↔ ירוק */
+  { promptImage: "1f534.png", correct: "1f7e2.png", options: ["1f7e2.png", "1f534.png", "1f535.png"] },
+  { promptImage: "1f7e2.png", correct: "1f534.png", options: ["1f534.png", "1f7e2.png", "1f7e1.png"] },
+  /* לבן ↔ שחור */
+  { promptImage: "26aa.png", correct: "26ab.png", options: ["26ab.png", "26aa.png", "1f535.png"] },
+  { promptImage: "26ab.png", correct: "26aa.png", options: ["26aa.png", "26ab.png", "1f534.png"] },
+  /* מהר ↔ לאט (ארנב ↔ צב) */
+  { promptImage: "1f430.png", correct: "1f422.png", options: ["1f422.png", "1f430.png", "1f407.png"] },
+  { promptImage: "1f422.png", correct: "1f430.png", options: ["1f430.png", "1f422.png", "1f40c.png"] },
+  /* גדול ↔ קטן (פיל ↔ נמלה) */
+  { promptImage: "1f418.png", correct: "1f41c.png", options: ["1f41c.png", "1f418.png", "1f42d.png"] },
+  { promptImage: "1f41c.png", correct: "1f418.png", options: ["1f418.png", "1f41c.png", "1f41b.png"] },
+  /* ספר פתוח ↔ ספר סגור */
+  { promptImage: "1f4d6.png", correct: "1f4d5.png", options: ["1f4d5.png", "1f4d6.png", "1f4da.png"] },
+  { promptImage: "1f4d5.png", correct: "1f4d6.png", options: ["1f4d6.png", "1f4d5.png", "1f4d3.png"] },
+  /* מים ↔ יבשה (גל ↔ אי מדברי) */
+  { promptImage: "1f30a.png", correct: "1f3dd.png", options: ["1f3dd.png", "1f30a.png", "1f3d6.png"] },
+  { promptImage: "1f3dd.png", correct: "1f30a.png", options: ["1f30a.png", "1f3dd.png", "1f332.png"] },
 ];
 
-/** G8 — חרוזים (תמונות בלבד; ההקראה מדברת על חרוז לשם המוצג) */
+/** G8 — חרוזים (גיל ~5: מילים וחפצים מהיומיום; תמונות בלבד + הקראה קצרה) */
 export type RhymeRound = {
   anchorFile: string;
   correct: string;
   options: [string, string, string];
 };
 
+/**
+ * 25 זוגות חרוזים × שני כיוונים = 50 סיבובים — אוצר מילים פשוט (חיות, גוף, בית, אוכל).
+ * הוסרו זוגות מורכבים/מילים נדירות (נהר–שיער, אור–צור, קיץ–מגן, "ברח", "ארוז" וכו').
+ * לכל שורה: `options` = [תשובה נכונה, תמונת גירוי, מסיח] — ה־UI מערבב.
+ */
 export const RHYME_ROUNDS: RhymeRound[] = [
-  { anchorFile: "1f3af.png", correct: "1f333.png", options: ["1f333.png", "1f3e0.png", "1f41f.png"] },
-  { anchorFile: "1f333.png", correct: "1f3af.png", options: ["1f3af.png", "1f3e0.png", "1f430.png"] },
-  { anchorFile: "1f436.png", correct: "1f496.png", options: ["1f496.png", "1f431.png", "1f41f.png"] },
-  { anchorFile: "1f3e0.png", correct: "1f31e.png", options: ["1f31e.png", "1f4d5.png", "1f333.png"] },
-  { anchorFile: "1f434.png", correct: "1f964.png", options: ["1f964.png", "1f697.png", "1f3e0.png"] },
-  { anchorFile: "2600.png", correct: "1f4a4.png", options: ["1f4a4.png", "1f319.png", "1f525.png"] },
-  { anchorFile: "1f319.png", correct: "1f4dd.png", options: ["1f4dd.png", "2600.png", "1f525.png"] },
-  { anchorFile: "1f41f.png", correct: "1f382.png", options: ["1f382.png", "1f3e0.png", "1f436.png"] },
-  { anchorFile: "2601.png", correct: "1f331.png", options: ["1f331.png", "2600.png", "1f30a.png"] },
-  { anchorFile: "1f4a7.png", correct: "1f30a.png", options: ["1f30a.png", "1f525.png", "1f436.png"] },
-  { anchorFile: "1f443.png", correct: "1f590.png", options: ["1f590.png", "1f441.png", "1f445.png"] },
-  { anchorFile: "1f525.png", correct: "1fab5.png", options: ["1fab5.png", "1f4a7.png", "2744.png"] },
-  { anchorFile: "1f590.png", correct: "1f4b0.png", options: ["1f4b0.png", "1f448.png", "1f449.png"] },
-  { anchorFile: "1f6a2.png", correct: "1f41f.png", options: ["1f41f.png", "1f30a.png", "1f3d6.png"] },
-  { anchorFile: "1f981.png", correct: "1f952.png", options: ["1f952.png", "1f34c.png", "1f418.png"] },
-  { anchorFile: "1f9f8.png", correct: "1f474.png", options: ["1f474.png", "1f469.png", "1f476.png"] },
-  { anchorFile: "1f452.png", correct: "1f468.png", options: ["1f468.png", "1f469.png", "1f476.png"] },
-  { anchorFile: "1f469.png", correct: "1f474.png", options: ["1f474.png", "1f468.png", "1f476.png"] },
+  /* חץ–עץ */
+  { anchorFile: "1f3f9.png", correct: "1f333.png", options: ["1f333.png", "1f3f9.png", "1f332.png"] },
+  { anchorFile: "1f333.png", correct: "1f3f9.png", options: ["1f3f9.png", "1f333.png", "1f334.png"] },
+  /* קרנף–אף */
+  { anchorFile: "1f98f.png", correct: "1f443.png", options: ["1f443.png", "1f98f.png", "1f444.png"] },
+  { anchorFile: "1f443.png", correct: "1f98f.png", options: ["1f98f.png", "1f443.png", "1f442.png"] },
+  /* סוס–כוס */
+  { anchorFile: "1f434.png", correct: "1f964.png", options: ["1f964.png", "1f434.png", "1f40e.png"] },
+  { anchorFile: "1f964.png", correct: "1f434.png", options: ["1f434.png", "1f964.png", "1f9c3.png"] },
+  /* רגל–דגל */
+  { anchorFile: "1f9b5.png", correct: "1f6a9.png", options: ["1f6a9.png", "1f9b5.png", "1f9b6.png"] },
+  { anchorFile: "1f6a9.png", correct: "1f9b5.png", options: ["1f9b5.png", "1f6a9.png", "1f3f3.png"] },
+  /* חלון–בלון */
+  { anchorFile: "1fa9f.png", correct: "1f388.png", options: ["1f388.png", "1fa9f.png", "1f3e0.png"] },
+  { anchorFile: "1f388.png", correct: "1fa9f.png", options: ["1fa9f.png", "1f388.png", "1f389.png"] },
+  /* ירח–פרח */
+  { anchorFile: "1f319.png", correct: "1f33c.png", options: ["1f33c.png", "1f319.png", "2b50.png"] },
+  { anchorFile: "1f33c.png", correct: "1f319.png", options: ["1f319.png", "1f33c.png", "1f33b.png"] },
+  /* מים–ים */
+  { anchorFile: "1f4a7.png", correct: "1f30a.png", options: ["1f30a.png", "1f4a7.png", "1f525.png"] },
+  { anchorFile: "1f30a.png", correct: "1f4a7.png", options: ["1f4a7.png", "1f30a.png", "1f3d6.png"] },
+  /* בית–זית */
+  { anchorFile: "1f3e0.png", correct: "1fad2.png", options: ["1fad2.png", "1f3e0.png", "1f3e1.png"] },
+  { anchorFile: "1fad2.png", correct: "1f3e0.png", options: ["1f3e0.png", "1fad2.png", "1f33c.png"] },
+  /* דבורה–מורה */
+  { anchorFile: "1f41d.png", correct: "1f469.png", options: ["1f469.png", "1f41d.png", "1f41e.png"] },
+  { anchorFile: "1f469.png", correct: "1f41d.png", options: ["1f41d.png", "1f469.png", "1f476.png"] },
+  /* נמלה–גמלה */
+  { anchorFile: "1f41c.png", correct: "1f42b.png", options: ["1f42b.png", "1f41c.png", "1f41b.png"] },
+  { anchorFile: "1f42b.png", correct: "1f41c.png", options: ["1f41c.png", "1f42b.png", "1f42a.png"] },
+  /* פיל–גיל (תינוק = גיל) */
+  { anchorFile: "1f418.png", correct: "1f476.png", options: ["1f476.png", "1f418.png", "1f404.png"] },
+  { anchorFile: "1f476.png", correct: "1f418.png", options: ["1f418.png", "1f476.png", "1f466.png"] },
+  /* מלון–בלון */
+  { anchorFile: "1f348.png", correct: "1f388.png", options: ["1f388.png", "1f348.png", "1f34c.png"] },
+  { anchorFile: "1f388.png", correct: "1f348.png", options: ["1f348.png", "1f388.png", "1f387.png"] },
+  /* תפוח–מוח */
+  { anchorFile: "1f34e.png", correct: "1f9e0.png", options: ["1f9e0.png", "1f34e.png", "1f34c.png"] },
+  { anchorFile: "1f9e0.png", correct: "1f34e.png", options: ["1f34e.png", "1f9e0.png", "1f34a.png"] },
+  /* נחש–לחש */
+  { anchorFile: "1f40d.png", correct: "1f910.png", options: ["1f910.png", "1f40d.png", "1f422.png"] },
+  { anchorFile: "1f910.png", correct: "1f40d.png", options: ["1f40d.png", "1f910.png", "1f916.png"] },
+  /* חתול–כחול */
+  { anchorFile: "1f431.png", correct: "1f535.png", options: ["1f535.png", "1f431.png", "1f436.png"] },
+  { anchorFile: "1f535.png", correct: "1f431.png", options: ["1f431.png", "1f535.png", "1f7e2.png"] },
+  /* עוף–קוף */
+  { anchorFile: "1f414.png", correct: "1f435.png", options: ["1f435.png", "1f414.png", "1f413.png"] },
+  { anchorFile: "1f435.png", correct: "1f414.png", options: ["1f414.png", "1f435.png", "1f412.png"] },
+  /* זאב–סב */
+  { anchorFile: "1f43a.png", correct: "1f474.png", options: ["1f474.png", "1f43a.png", "1f436.png"] },
+  { anchorFile: "1f474.png", correct: "1f43a.png", options: ["1f43a.png", "1f474.png", "1f476.png"] },
+  /* ספר–כפר */
+  { anchorFile: "1f4d5.png", correct: "1f3d8.png", options: ["1f3d8.png", "1f4d5.png", "1f4d6.png"] },
+  { anchorFile: "1f3d8.png", correct: "1f4d5.png", options: ["1f4d5.png", "1f3d8.png", "1f3e0.png"] },
+  /* כלב–לב */
+  { anchorFile: "1f436.png", correct: "1f493.png", options: ["1f493.png", "1f436.png", "1f431.png"] },
+  { anchorFile: "1f493.png", correct: "1f436.png", options: ["1f436.png", "1f493.png", "1f49a.png"] },
+  /* דוב–אהוב */
+  { anchorFile: "1f43b.png", correct: "1f49a.png", options: ["1f49a.png", "1f43b.png", "1f43c.png"] },
+  { anchorFile: "1f49a.png", correct: "1f43b.png", options: ["1f43b.png", "1f49a.png", "2764.png"] },
+  /* דג–חג */
+  { anchorFile: "1f41f.png", correct: "1f389.png", options: ["1f389.png", "1f41f.png", "1f420.png"] },
+  { anchorFile: "1f389.png", correct: "1f41f.png", options: ["1f41f.png", "1f389.png", "1f38a.png"] },
+  /* קיץ–קיף (שמש–חוף) */
+  { anchorFile: "2600.png", correct: "1f3d6.png", options: ["1f3d6.png", "2600.png", "26c5.png"] },
+  { anchorFile: "1f3d6.png", correct: "2600.png", options: ["2600.png", "1f3d6.png", "1f30a.png"] },
+  /* אריה–נעליה */
+  { anchorFile: "1f981.png", correct: "1f460.png", options: ["1f460.png", "1f981.png", "1f405.png"] },
+  { anchorFile: "1f460.png", correct: "1f981.png", options: ["1f981.png", "1f460.png", "1f45c.png"] },
+  /* ידיים–רגליים */
+  { anchorFile: "1f450.png", correct: "1f9b6.png", options: ["1f9b6.png", "1f450.png", "1f9b5.png"] },
+  { anchorFile: "1f9b6.png", correct: "1f450.png", options: ["1f450.png", "1f9b6.png", "1f463.png"] },
+  /* חורף–גורף (שלג–מטאטא) */
+  { anchorFile: "2744.png", correct: "1f9f9.png", options: ["1f9f9.png", "2744.png", "1f328.png"] },
+  { anchorFile: "1f9f9.png", correct: "2744.png", options: ["2744.png", "1f9f9.png", "1f9fc.png"] },
 ];
 
-/** G10 — סדרות מספרים */
+/** G10 — סדרות מספרים (גיל ~5: כל המספרים 1–10 בלבד; הפרש קבוע 1–10 — בפועל רק 1–3 מתאימים לארבעה איברים בטווח) */
 export type SequenceRound = {
   display: [string, string, string, string];
   answer: number;
   options: [number, number, number];
 };
 
+const SEQUENCE_MAX_N = 10;
+
+/** כל זוגות (התחלה, הפרש) שבהן ארבעת האיברים בין 1 ל־10 כולל */
+function sequenceStartStepPairs(): { start: number; step: number }[] {
+  const pairs: { start: number; step: number }[] = [];
+  for (let step = 1; step <= SEQUENCE_MAX_N; step++) {
+    const maxStart = SEQUENCE_MAX_N - 3 * step;
+    for (let start = 1; start <= maxStart; start++) {
+      pairs.push({ start, step });
+    }
+  }
+  return pairs;
+}
+
+function sequenceWrongOptions(answer: number): [number, number] {
+  const pool = Array.from({ length: SEQUENCE_MAX_N }, (_, j) => j + 1).filter((n) => n !== answer);
+  return [pool[0], pool[1]];
+}
+
 function buildSequenceRounds(): SequenceRound[] {
+  const pairs = sequenceStartStepPairs();
   const out: SequenceRound[] = [];
   for (let i = 0; i < 30; i++) {
-    const start = 1 + (i % 4);
-    const step = 1 + (i % 4);
+    const { start, step } = pairs[i % pairs.length];
     const seq = [start, start + step, start + 2 * step, start + 3 * step];
     const miss = 1 + (i % 2);
     const ans = seq[miss];
-    let w1 = ans + 1;
-    let w2 = ans - 1;
-    if (w1 === ans) w1 = ans + 2;
-    if (w2 === ans || w2 < 0) w2 = ans + 2;
-    if (w1 === w2) w2 = w1 + 1;
+    const [w1, w2] = sequenceWrongOptions(ans);
     const opts: [number, number, number] = [ans, w1, w2];
     const labels: [string, string, string, string] = seq.map((n, idx) => (idx === miss ? "_" : String(n))) as [
       string,
