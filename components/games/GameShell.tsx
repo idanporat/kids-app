@@ -4,7 +4,7 @@ import Link from "next/link";
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 import { RewardAnimation } from "@/components/games/RewardAnimation";
-import { resumeAudioContext } from "@/lib/game-audio";
+import { unlockGameAudio } from "@/lib/game-audio";
 
 type RewardsApi = {
   triggerStars: () => void;
@@ -35,13 +35,13 @@ export function GameShell({ token, progress = 0, children, onRoundComplete }: Pr
   const [reward, setReward] = useState<"stars" | "hero-fly" | "none">("none");
 
   const triggerStars = useCallback(() => {
-    resumeAudioContext();
+    unlockGameAudio();
     setReward("stars");
     window.setTimeout(() => setReward("none"), 900);
   }, []);
 
   const triggerRoundComplete = useCallback(() => {
-    resumeAudioContext();
+    unlockGameAudio();
     setReward("hero-fly");
     onRoundComplete?.();
     window.setTimeout(() => setReward("none"), 2200);
@@ -54,7 +54,12 @@ export function GameShell({ token, progress = 0, children, onRoundComplete }: Pr
 
   return (
     <GameRewardsContext.Provider value={api}>
-      <div className="flex min-h-[70vh] flex-col">
+      <div
+        className="flex min-h-[70vh] flex-col"
+        onPointerDownCapture={() => {
+          unlockGameAudio();
+        }}
+      >
         <div className="mb-4 flex items-center gap-3">
           <Link
             href={`/join/${token}/games`}

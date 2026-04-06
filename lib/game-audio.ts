@@ -4,27 +4,54 @@
 
 let audioCtx: AudioContext | null = null;
 
+function createCtx(): AudioContext {
+  const w = window as unknown as {
+    AudioContext: typeof AudioContext;
+    webkitAudioContext?: typeof AudioContext;
+  };
+  const Ctor = w.AudioContext ?? w.webkitAudioContext;
+  return new Ctor();
+}
+
 function getCtx(): AudioContext | null {
   if (typeof window === "undefined") return null;
   if (!audioCtx) {
-    audioCtx = new AudioContext();
+    audioCtx = createCtx();
   }
   return audioCtx;
 }
 
 /**
- * Mobile browsers (Safari iOS, Chrome Android) start AudioContext in "suspended" and only
- * unlock it after a user gesture. Playback must run after resume() settles — not in the
- * same synchronous tick as createOscillator on a still-suspended context.
+ * Call synchronously from a user gesture (pointerdown/click). iOS Safari needs resume()
+ * plus a one-sample silent buffer in the same activation; GameShell also runs this on
+ * pointerdown capture so the context unlocks before click handlers run.
+ */
+export function unlockGameAudio(): void {
+  const ctx = getCtx();
+  if (!ctx) return;
+  if (ctx.state === "suspended") {
+    void ctx.resume();
+  }
+  const silent = ctx.createBuffer(1, 1, ctx.sampleRate);
+  const src = ctx.createBufferSource();
+  src.buffer = silent;
+  src.connect(ctx.destination);
+  src.start(0);
+}
+
+/**
+ * Mobile browsers start AudioContext in "suspended". Always unlock first, then play
+ * after resume() resolves if still needed.
  */
 function runWhenAudioReady(play: (ctx: AudioContext) => void) {
   const ctx = getCtx();
   if (!ctx) return;
+  unlockGameAudio();
   const go = () => play(ctx);
-  if (ctx.state === "suspended") {
-    void ctx.resume().then(go);
-  } else {
+  if (ctx.state === "running") {
     go();
+  } else {
+    void ctx.resume().then(go);
   }
 }
 
@@ -94,18 +121,12 @@ export function speakHebrew(text: string): Promise<void> {
       u.rate = 0.92;
       u.pitch = 1;
 
-      // Try to find a Hebrew voice explicitly (Chrome mobile needs this)
       const voices = window.speechSynthesis.getVoices();
       const heVoice = voices.find(
         (v) => v.lang === "he-IL" || v.lang === "he" || v.lang.startsWith("he")
       );
       if (heVoice) u.voice = heVoice;
 
-      u.onend = () => resolve();
-      u.onerror = () => resolve();
-      window.speechSynthesis.speak(u);
-
-      // Chrome mobile sometimes stops mid-speech; keep it alive
       const keepAlive = setInterval(() => {
         if (!window.speechSynthesis.speaking) {
           clearInterval(keepAlive);
@@ -114,30 +135,32 @@ export function speakHebrew(text: string): Promise<void> {
           window.speechSynthesis.resume();
         }
       }, 5000);
-      u.onend = () => { clearInterval(keepAlive); resolve(); };
-      u.onerror = () => { clearInterval(keepAlive); resolve(); };
+      u.onend = () => {
+        clearInterval(keepAlive);
+        resolve();
+      };
+      u.onerror = () => {
+        clearInterval(keepAlive);
+        resolve();
+      };
+      window.speechSynthesis.speak(u);
     };
 
-    // Chrome loads voices asynchronously — wait for them if empty
+    // Must call speak() in the same synchronous turn as the user gesture (iOS Safari).
+    // Do not defer the first speak with setTimeout — that breaks autoplay policy.
+    void window.speechSynthesis.getVoices();
+    trySpeak();
+
     if (window.speechSynthesis.getVoices().length === 0) {
       window.speechSynthesis.onvoiceschanged = () => {
         window.speechSynthesis.onvoiceschanged = null;
+        window.speechSynthesis.cancel();
         trySpeak();
       };
-      // Fallback if onvoiceschanged never fires
-      setTimeout(() => {
-        window.speechSynthesis.onvoiceschanged = null;
-        trySpeak();
-      }, 300);
-    } else {
-      trySpeak();
     }
   });
 }
 
 export function resumeAudioContext() {
-  const ctx = getCtx();
-  if (ctx?.state === "suspended") {
-    void ctx.resume();
-  }
+  unlockGameAudio();
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
-import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew } from "@/lib/game-audio";
+import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew, unlockGameAudio } from "@/lib/game-audio";
 import { bumpHeroWords } from "@/lib/game-progress";
 import { twemojiUrl, WORD_ROUNDS } from "@/lib/game-data";
 
@@ -31,14 +31,23 @@ function HeroWordsInner({ onProgress }: { onProgress: (pct: number) => void }) {
 
   const progress = (correctInWave / 5) * 100;
 
+  const roundKey = `${round.word}-${cursor}`;
+  const heardRef = useRef<string | null>(null);
+  useEffect(() => {
+    heardRef.current = null;
+  }, [roundKey]);
+
   useEffect(() => {
     onProgress(progress);
   }, [onProgress, progress]);
 
-  useEffect(() => {
-    resumeAudioContext();
+  function maybeSpeakOnFirstTouch(e: React.PointerEvent) {
+    if (e.target instanceof Element && e.target.closest("[data-audio-replay]")) return;
+    if (heardRef.current === roundKey) return;
+    heardRef.current = roundKey;
+    unlockGameAudio();
     void speakHebrew(round.word);
-  }, [round]);
+  }
 
   function replay() {
     if (busy) return;
@@ -70,13 +79,14 @@ function HeroWordsInner({ onProgress }: { onProgress: (pct: number) => void }) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-8 px-2">
+    <div className="flex flex-col items-center gap-8 px-2" onPointerDownCapture={maybeSpeakOnFirstTouch}>
       <div className="flex flex-col items-center gap-4">
         <div className="text-7xl" aria-hidden>
           🦸‍♂️
         </div>
         <button
           type="button"
+          data-audio-replay
           onClick={replay}
           disabled={busy}
           className="inline-flex min-h-[56px] min-w-[56px] items-center justify-center rounded-full border-4 border-violet-400 bg-violet-100 px-6 text-4xl shadow-md transition active:scale-95 disabled:opacity-60 dark:bg-violet-950/50"
