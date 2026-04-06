@@ -13,7 +13,6 @@ import { RhymesGame } from "@/components/games/RhymesGame";
 import { SequencesGame } from "@/components/games/SequencesGame";
 import { ShapeHero } from "@/components/games/ShapeHero";
 import { ShapeMatchGame } from "@/components/games/ShapeMatchGame";
-import { SoundIdGame } from "@/components/games/SoundIdGame";
 import { VisualClosureGame } from "@/components/games/VisualClosureGame";
 import type { GameId } from "@/lib/game-data";
 
@@ -47,8 +46,6 @@ export function GamePlayClient({ token, gameId }: { token: string; gameId: GameI
       return <CountingGame token={token} />;
     case "phonetics":
       return <PhoneticsGame token={token} />;
-    case "sound-id":
-      return <SoundIdGame token={token} />;
     default:
       return null;
   }

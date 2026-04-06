@@ -15,7 +15,6 @@ export const GAME_IDS = [
   "sequences",
   "counting",
   "phonetics",
-  "sound-id",
 ] as const;
 export type GameId = (typeof GAME_IDS)[number];
 
@@ -99,11 +98,6 @@ export const GAME_LIST: GameMeta[] = [
     id: "phonetics",
     title: "אות ראשונה",
     emoji: "🔤",
-  },
-  {
-    id: "sound-id",
-    title: "מי משמיע?",
-    emoji: "🔊",
   },
 ];
 
@@ -495,7 +489,6 @@ export {
   RHYME_ROUNDS,
   SEQUENCE_ROUNDS,
   SHAPE_MATCH_ROUNDS,
-  SOUND_ID_ROUNDS,
   VISUAL_CLOSURE_ROUNDS,
   environmentMeta,
   type ActionMatchRound,
@@ -509,6 +502,6 @@ export {
   type RhymeRound,
   type SequenceRound,
   type ShapeMatchRound,
-  type SoundIdRound,
+  type ShapeMatchShapeId,
   type VisualClosureRound,
 } from "./game-modules-data";

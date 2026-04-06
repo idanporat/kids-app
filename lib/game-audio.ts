@@ -1,7 +1,5 @@
 "use client";
 
-import { playTwemojiSound as playTwemojiSoundSynthesized } from "./sound-id-effects";
-
 /** Hebrew TTS + SFX via HTML5 Audio (works on mobile Safari; Web Audio often breaks after async resume). */
 
 const SAMPLE_RATE = 22050;
@@ -249,27 +247,4 @@ export function speakHebrew(text: string, opts?: { rate?: number }): Promise<voi
 
 export function resumeAudioContext() {
   unlockGameAudio();
-}
-
-/**
- * Procedural “object” sound for מי משמיע (sound-id). Returns false if no synth for this asset — use TTS fallback.
- */
-export function playTwemojiSound(file: string): boolean {
-  const ctx = getCtx();
-  if (!ctx) return false;
-  try {
-    if (ctx.state === "suspended") void ctx.resume();
-    return playTwemojiSoundSynthesized(ctx, file);
-  } catch {
-    return false;
-  }
-}
-
-/** צליל סינתזה לפי האימוג׳י הנכון; אם אין מיפוי — הקראת המילה ב־TTS. */
-export async function playSoundIdHint(file: string, speakFallback: string): Promise<void> {
-  unlockGameAudio();
-  const ctx = getCtx();
-  if (ctx?.state === "suspended") await ctx.resume();
-  const played = ctx ? playTwemojiSoundSynthesized(ctx, file) : false;
-  if (!played) await speakHebrew(speakFallback);
 }

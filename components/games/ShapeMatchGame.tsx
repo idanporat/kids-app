@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { GameShell, useGameRewards } from "@/components/games/GameShell";
+import { ShapeSvg } from "@/components/games/ShapeSvg";
 import { shuffle } from "@/components/games/ModuleGameCommon";
 import { playCorrectChime, playSoftBuzz, resumeAudioContext, speakHebrew } from "@/lib/game-audio";
-import { SHAPE_MATCH_ROUNDS, twemojiUrl } from "@/lib/game-data";
+import { SHAPE_MATCH_ROUNDS, twemojiUrl, type ShapeId } from "@/lib/game-data";
 import { bumpGameModuleRound, recordGameAttempt } from "@/lib/game-progress";
 
 export function ShapeMatchGame({ token }: { token: string }) {
@@ -82,14 +83,9 @@ function ShapeMatchInner({
       </div>
 
       <div className="flex flex-col items-center gap-3 rounded-3xl border-4 border-amber-200 bg-amber-50/80 px-10 py-6 dark:border-amber-700 dark:bg-amber-950/30">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={twemojiUrl(round.shapeFile)}
-          alt=""
-          width={120}
-          height={120}
-          className="h-[120px] w-[120px] object-contain"
-        />
+        <div className="flex h-[120px] w-[120px] items-center justify-center" aria-hidden>
+          <ShapeSvg shape={round.shape as ShapeId} size={120} />
+        </div>
       </div>
 
       <div className="grid w-full max-w-lg grid-cols-3 gap-4">

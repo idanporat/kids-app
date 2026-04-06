@@ -97,35 +97,38 @@ export const ENVIRONMENT_ROUNDS: EnvironmentRound[] = [
   { itemLabel: "מנורה", itemFile: "1f4a1.png", correctEnv: "home", envs: ["home", "land", "sea"] },
 ];
 
-/** G3 — צורה לחפץ (התאמה ויזואלית: משולש/עיגול/ריבוע/כוכב/לב — בלי טקסט במסך) */
+/** G3 — צורה לחפץ: למעלה צורה גיאומטרית (SVG); בוחרים חפץ עם צורה דומה (לא אימוג׳י־״צורה״ שמבלבל) */
+export type ShapeMatchShapeId = "circle" | "square" | "triangle" | "star" | "heart" | "hexagon";
+
 export type ShapeMatchRound = {
-  shapeFile: string;
+  shape: ShapeMatchShapeId;
   correct: string;
   options: [string, string, string];
 };
 
 export const SHAPE_MATCH_ROUNDS: ShapeMatchRound[] = [
-  { shapeFile: "1f53a.png", correct: "1f355.png", options: ["1f355.png", "1f34e.png", "26bd.png"] },
-  { shapeFile: "1f53a.png", correct: "1f3d4.png", options: ["1f3d4.png", "1f3e0.png", "1f4f0.png"] },
-  { shapeFile: "1f53a.png", correct: "1f384.png", options: ["1f384.png", "1f332.png", "1f333.png"] },
-  { shapeFile: "1f53a.png", correct: "1f6a8.png", options: ["1f6a8.png", "1f4f1.png", "1f34e.png"] },
-  { shapeFile: "26aa.png", correct: "1f34e.png", options: ["1f34e.png", "1f34c.png", "1f355.png"] },
-  { shapeFile: "26aa.png", correct: "26bd.png", options: ["26bd.png", "1f3c0.png", "1f3be.png"] },
-  { shapeFile: "26ab.png", correct: "1f35e.png", options: ["1f35e.png", "1f956.png", "1f355.png"] },
-  { shapeFile: "26aa.png", correct: "1f36a.png", options: ["1f36a.png", "1f355.png", "1f4d5.png"] },
-  { shapeFile: "26aa.png", correct: "1f9c3.png", options: ["1f9c3.png", "1f34b.png", "1f355.png"] },
-  { shapeFile: "26aa.png", correct: "1f37a.png", options: ["1f37a.png", "1f4d6.png", "1f355.png"] },
-  { shapeFile: "26ab.png", correct: "1f961.png", options: ["1f961.png", "1f35c.png", "1f355.png"] },
-  { shapeFile: "26aa.png", correct: "1f34a.png", options: ["1f34a.png", "1f34c.png", "1f355.png"] },
-  { shapeFile: "1f7e6.png", correct: "1f4f0.png", options: ["1f4f0.png", "1f4d5.png", "1f4da.png"] },
-  { shapeFile: "1f7e6.png", correct: "1f4f1.png", options: ["1f4f1.png", "1f4bb.png", "1f4f2.png"] },
-  { shapeFile: "1f7e6.png", correct: "1f9f0.png", options: ["1f9f0.png", "1f4bd.png", "1f4bf.png"] },
-  { shapeFile: "1f7e6.png", correct: "1f4f2.png", options: ["1f4f2.png", "1f4f1.png", "260e.png"] },
-  { shapeFile: "2b50.png", correct: "1f31f.png", options: ["1f31f.png", "2728.png", "1f320.png"] },
-  { shapeFile: "2b50.png", correct: "1f320.png", options: ["1f320.png", "1f52d.png", "1f52c.png"] },
-  { shapeFile: "1f496.png", correct: "1f495.png", options: ["1f495.png", "1f48c.png", "1f339.png"] },
-  { shapeFile: "1f496.png", correct: "1f490.png", options: ["1f490.png", "1f33c.png", "1f339.png"] },
-  { shapeFile: "1f496.png", correct: "1f48b.png", options: ["1f48b.png", "1f444.png", "1f445.png"] },
+  { shape: "triangle", correct: "1f355.png", options: ["1f355.png", "1f34e.png", "26bd.png"] },
+  { shape: "triangle", correct: "1f3d4.png", options: ["1f3d4.png", "1f3e0.png", "1f4f0.png"] },
+  { shape: "triangle", correct: "1f384.png", options: ["1f384.png", "1f332.png", "1f333.png"] },
+  { shape: "triangle", correct: "1f6a8.png", options: ["1f6a8.png", "1f4f1.png", "1f34e.png"] },
+  { shape: "circle", correct: "1f34e.png", options: ["1f34e.png", "1f34c.png", "1f355.png"] },
+  { shape: "circle", correct: "26bd.png", options: ["26bd.png", "1f3c0.png", "1f3be.png"] },
+  { shape: "circle", correct: "1f35e.png", options: ["1f35e.png", "1f956.png", "1f355.png"] },
+  { shape: "circle", correct: "1f36a.png", options: ["1f36a.png", "1f355.png", "1f4d5.png"] },
+  { shape: "circle", correct: "1f9c3.png", options: ["1f9c3.png", "1f34b.png", "1f355.png"] },
+  { shape: "circle", correct: "1f37a.png", options: ["1f37a.png", "1f4d6.png", "1f355.png"] },
+  { shape: "circle", correct: "1f961.png", options: ["1f961.png", "1f35c.png", "1f355.png"] },
+  { shape: "circle", correct: "1f34a.png", options: ["1f34a.png", "1f34c.png", "1f355.png"] },
+  { shape: "square", correct: "1f4f0.png", options: ["1f4f0.png", "1f4d5.png", "1f4da.png"] },
+  { shape: "square", correct: "1f4f1.png", options: ["1f4f1.png", "1f4bb.png", "1f4f2.png"] },
+  { shape: "square", correct: "1f9f0.png", options: ["1f9f0.png", "1f4bd.png", "1f4bf.png"] },
+  { shape: "square", correct: "1f4f2.png", options: ["1f4f2.png", "1f4f1.png", "260e.png"] },
+  { shape: "star", correct: "1f31f.png", options: ["1f31f.png", "2728.png", "1f320.png"] },
+  { shape: "star", correct: "1f320.png", options: ["1f320.png", "1f52d.png", "1f52c.png"] },
+  { shape: "heart", correct: "1f495.png", options: ["1f495.png", "1f48c.png", "1f339.png"] },
+  { shape: "heart", correct: "1f490.png", options: ["1f490.png", "1f33c.png", "1f339.png"] },
+  { shape: "heart", correct: "1f48b.png", options: ["1f48b.png", "1f444.png", "1f445.png"] },
+  { shape: "hexagon", correct: "2744.png", options: ["2744.png", "1f34e.png", "1f355.png"] },
 ];
 
 /** G4 — מקום לחפץ (תמונת הקשר בלבד — בלי מילים) */
@@ -1426,45 +1429,4 @@ export const PHONETICS_ROUNDS: PhoneticsRound[] = [
       { file: "1f431.png", word: "חתול" },
     ],
   },
-];
-
-/** G13 — מי משמיע (הקראת המילה בעברית ב־TTS; בוחרים את התמונה המתאימה) */
-export type SoundIdRound = {
-  speak: string;
-  correct: string;
-  options: [string, string, string];
-};
-
-export const SOUND_ID_ROUNDS: SoundIdRound[] = [
-  { speak: "רכבת", correct: "1f682.png", options: ["1f682.png", "1f697.png", "2708.png"] },
-  { speak: "מכונית", correct: "1f697.png", options: ["1f697.png", "1f68c.png", "1f6b2.png"] },
-  { speak: "אוטובוס", correct: "1f68c.png", options: ["1f68c.png", "1f690.png", "1f695.png"] },
-  { speak: "מטוס", correct: "2708.png", options: ["2708.png", "1f681.png", "1f6eb.png"] },
-  { speak: "סירה", correct: "26f5.png", options: ["26f5.png", "1f6a2.png", "1f6a3.png"] },
-  { speak: "אופניים", correct: "1f6b2.png", options: ["1f6b2.png", "1f6f5.png", "1f6b4.png"] },
-  { speak: "מסוק", correct: "1f681.png", options: ["1f681.png", "2708.png", "1f6eb.png"] },
-  { speak: "משאית", correct: "1f69a.png", options: ["1f69a.png", "1f697.png", "1f68c.png"] },
-  { speak: "אמבולנס", correct: "1f691.png", options: ["1f691.png", "1f693.png", "1f692.png"] },
-  { speak: "כלב", correct: "1f436.png", options: ["1f436.png", "1f431.png", "1f430.png"] },
-  { speak: "חתול", correct: "1f431.png", options: ["1f431.png", "1f436.png", "1f984.png"] },
-  { speak: "אריה", correct: "1f981.png", options: ["1f981.png", "1f42f.png", "1f405.png"] },
-  { speak: "פיל", correct: "1f418.png", options: ["1f418.png", "1f42f.png", "1f404.png"] },
-  { speak: "פרה", correct: "1f404.png", options: ["1f404.png", "1f411.png", "1f410.png"] },
-  { speak: "סוס", correct: "1f434.png", options: ["1f434.png", "1f40e.png", "1f402.png"] },
-  { speak: "כבשה", correct: "1f411.png", options: ["1f411.png", "1f410.png", "1f404.png"] },
-  { speak: "עז", correct: "1f410.png", options: ["1f410.png", "1f411.png", "1f402.png"] },
-  { speak: "דג", correct: "1f41f.png", options: ["1f41f.png", "1f420.png", "1f419.png"] },
-  { speak: "ציפור", correct: "1f426.png", options: ["1f426.png", "1f427.png", "1f54a.png"] },
-  { speak: "ברווז", correct: "1f986.png", options: ["1f986.png", "1f427.png", "1f424.png"] },
-  { speak: "נשר", correct: "1f985.png", options: ["1f985.png", "1f426.png", "1f989.png"] },
-  { speak: "ינשוף", correct: "1f989.png", options: ["1f989.png", "1f985.png", "1f426.png"] },
-  { speak: "דוב", correct: "1f43b.png", options: ["1f43b.png", "1f43c.png", "1f428.png"] },
-  { speak: "פנדה", correct: "1f43c.png", options: ["1f43c.png", "1f43b.png", "1f428.png"] },
-  { speak: "קוף", correct: "1f435.png", options: ["1f435.png", "1f412.png", "1f9a7.png"] },
-  { speak: "ארנב", correct: "1f430.png", options: ["1f430.png", "1f42d.png", "1f439.png"] },
-  { speak: "חד קרן", correct: "1f984.png", options: ["1f984.png", "1f981.png", "1f434.png"] },
-  { speak: "זברה", correct: "1f993.png", options: ["1f993.png", "1f992.png", "1f404.png"] },
-  { speak: "ג׳ירפה", correct: "1f992.png", options: ["1f992.png", "1f993.png", "1f998.png"] },
-  { speak: "תרנגול", correct: "1f413.png", options: ["1f413.png", "1f414.png", "1f423.png"] },
-  { speak: "צפרדע", correct: "1f438.png", options: ["1f438.png", "1f422.png", "1f40d.png"] },
 ];

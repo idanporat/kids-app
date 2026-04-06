@@ -50,7 +50,6 @@ export type AllGameProgress = {
   sequences: ModuleProgress;
   counting: ModuleProgress;
   phonetics: ModuleProgress;
-  soundId: ModuleProgress;
   recentMistakes: ProgressMistake[];
   updatedAt: string;
 };
@@ -68,7 +67,6 @@ export const MODULE_GAME_PROGRESS_KEYS: Partial<Record<GameId, keyof AllGameProg
   sequences: "sequences",
   counting: "counting",
   phonetics: "phonetics",
-  "sound-id": "soundId",
 };
 
 const moduleDefault = (): ModuleProgress => ({
@@ -92,7 +90,6 @@ const defaultProgress = (): AllGameProgress => ({
   sequences: moduleDefault(),
   counting: moduleDefault(),
   phonetics: moduleDefault(),
-  soundId: moduleDefault(),
   recentMistakes: [],
   updatedAt: new Date().toISOString(),
 });
@@ -126,9 +123,15 @@ function normMistakes(raw: unknown): ProgressMistake[] {
 function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined): AllGameProgress {
   const base = defaultProgress();
   if (!parsed || typeof parsed !== "object") return base;
-  const { heroWords: _omitHeroWords, speakIt: _omitSpeakIt, ...parsedRest } = parsed as Partial<AllGameProgress> & {
+  const {
+    heroWords: _omitHeroWords,
+    speakIt: _omitSpeakIt,
+    soundId: _omitSoundId,
+    ...parsedRest
+  } = parsed as Partial<AllGameProgress> & {
     heroWords?: unknown;
     speakIt?: unknown;
+    soundId?: unknown;
   };
   return {
     ...base,
@@ -202,11 +205,6 @@ function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined)
       roundsCompleted: parsed.phonetics?.roundsCompleted ?? base.phonetics.roundsCompleted,
       correctCount: parsed.phonetics?.correctCount ?? base.phonetics.correctCount,
       wrongCount: parsed.phonetics?.wrongCount ?? base.phonetics.wrongCount,
-    },
-    soundId: {
-      roundsCompleted: parsed.soundId?.roundsCompleted ?? base.soundId.roundsCompleted,
-      correctCount: parsed.soundId?.correctCount ?? base.soundId.correctCount,
-      wrongCount: parsed.soundId?.wrongCount ?? base.soundId.wrongCount,
     },
     recentMistakes: normMistakes(parsed.recentMistakes),
   };
@@ -292,7 +290,6 @@ export function saveProgress(token: string, next: Partial<AllGameProgress>) {
     sequences: { ...prev.sequences, ...next.sequences },
     counting: { ...prev.counting, ...next.counting },
     phonetics: { ...prev.phonetics, ...next.phonetics },
-    soundId: { ...prev.soundId, ...next.soundId },
     recentMistakes: next.recentMistakes ?? prev.recentMistakes,
     updatedAt: new Date().toISOString(),
   };
@@ -419,8 +416,7 @@ export function formatProgressSummary(p: AllGameProgress): string {
     p.rhymes.roundsCompleted +
     p.sequences.roundsCompleted +
     p.counting.roundsCompleted +
-    p.phonetics.roundsCompleted +
-    p.soundId.roundsCompleted;
+    p.phonetics.roundsCompleted;
   return [
     `גיבור הצורות: ${p.shapeHero.roundsCompleted} סיבובים`,
     `זיכרון הכוחות: עד ${p.powerMemory.maxPairs} זוגות`,
@@ -443,8 +439,7 @@ export function totalCompletedRounds(p: AllGameProgress): number {
     p.rhymes.roundsCompleted +
     p.sequences.roundsCompleted +
     p.counting.roundsCompleted +
-    p.phonetics.roundsCompleted +
-    p.soundId.roundsCompleted
+    p.phonetics.roundsCompleted
   );
 }
 
@@ -487,8 +482,6 @@ export function gameLabel(id: GameId): string {
       return "ספירה";
     case "phonetics":
       return "אות ראשונה";
-    case "sound-id":
-      return "מי משמיע?";
     default:
       return id;
   }
