@@ -12,7 +12,6 @@ import { PowerMemory } from "@/components/games/PowerMemory";
 import { RhymesGame } from "@/components/games/RhymesGame";
 import { SequencesGame } from "@/components/games/SequencesGame";
 import { ShapeHero } from "@/components/games/ShapeHero";
-import { ShapeMatchGame } from "@/components/games/ShapeMatchGame";
 import { VisualClosureGame } from "@/components/games/VisualClosureGame";
 import type { GameId } from "@/lib/game-data";
 
@@ -28,8 +27,6 @@ export function GamePlayClient({ token, gameId }: { token: string; gameId: GameI
       return <AssociationsGame token={token} />;
     case "environments":
       return <EnvironmentsGame token={token} />;
-    case "shape-match":
-      return <ShapeMatchGame token={token} />;
     case "context-match":
       return <ContextMatchGame token={token} />;
     case "action-match":

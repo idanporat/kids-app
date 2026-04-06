@@ -41,7 +41,6 @@ export type AllGameProgress = {
   categoryPick: CategoryPickProgress;
   associations: ModuleProgress;
   environments: ModuleProgress;
-  shapeMatch: ModuleProgress;
   contextMatch: ModuleProgress;
   actionMatch: ModuleProgress;
   visualClosure: ModuleProgress;
@@ -58,7 +57,6 @@ export type AllGameProgress = {
 export const MODULE_GAME_PROGRESS_KEYS: Partial<Record<GameId, keyof AllGameProgress>> = {
   associations: "associations",
   environments: "environments",
-  "shape-match": "shapeMatch",
   "context-match": "contextMatch",
   "action-match": "actionMatch",
   "visual-closure": "visualClosure",
@@ -81,7 +79,6 @@ const defaultProgress = (): AllGameProgress => ({
   categoryPick: { roundsCompleted: 0, correctCount: 0, wrongCount: 0 },
   associations: moduleDefault(),
   environments: moduleDefault(),
-  shapeMatch: moduleDefault(),
   contextMatch: moduleDefault(),
   actionMatch: moduleDefault(),
   visualClosure: moduleDefault(),
@@ -127,11 +124,13 @@ function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined)
     heroWords: _omitHeroWords,
     speakIt: _omitSpeakIt,
     soundId: _omitSoundId,
+    shapeMatch: _omitShapeMatch,
     ...parsedRest
   } = parsed as Partial<AllGameProgress> & {
     heroWords?: unknown;
     speakIt?: unknown;
     soundId?: unknown;
+    shapeMatch?: unknown;
   };
   return {
     ...base,
@@ -160,11 +159,6 @@ function mergeProgressPatch(parsed: Partial<AllGameProgress> | null | undefined)
       roundsCompleted: parsed.environments?.roundsCompleted ?? base.environments.roundsCompleted,
       correctCount: parsed.environments?.correctCount ?? base.environments.correctCount,
       wrongCount: parsed.environments?.wrongCount ?? base.environments.wrongCount,
-    },
-    shapeMatch: {
-      roundsCompleted: parsed.shapeMatch?.roundsCompleted ?? base.shapeMatch.roundsCompleted,
-      correctCount: parsed.shapeMatch?.correctCount ?? base.shapeMatch.correctCount,
-      wrongCount: parsed.shapeMatch?.wrongCount ?? base.shapeMatch.wrongCount,
     },
     contextMatch: {
       roundsCompleted: parsed.contextMatch?.roundsCompleted ?? base.contextMatch.roundsCompleted,
@@ -281,7 +275,6 @@ export function saveProgress(token: string, next: Partial<AllGameProgress>) {
     categoryPick: { ...prev.categoryPick, ...next.categoryPick },
     associations: { ...prev.associations, ...next.associations },
     environments: { ...prev.environments, ...next.environments },
-    shapeMatch: { ...prev.shapeMatch, ...next.shapeMatch },
     contextMatch: { ...prev.contextMatch, ...next.contextMatch },
     actionMatch: { ...prev.actionMatch, ...next.actionMatch },
     visualClosure: { ...prev.visualClosure, ...next.visualClosure },
@@ -408,7 +401,6 @@ export function formatProgressSummary(p: AllGameProgress): string {
   const moduleRounds =
     p.associations.roundsCompleted +
     p.environments.roundsCompleted +
-    p.shapeMatch.roundsCompleted +
     p.contextMatch.roundsCompleted +
     p.actionMatch.roundsCompleted +
     p.visualClosure.roundsCompleted +
@@ -431,7 +423,6 @@ export function totalCompletedRounds(p: AllGameProgress): number {
     p.categoryPick.roundsCompleted +
     p.associations.roundsCompleted +
     p.environments.roundsCompleted +
-    p.shapeMatch.roundsCompleted +
     p.contextMatch.roundsCompleted +
     p.actionMatch.roundsCompleted +
     p.visualClosure.roundsCompleted +
@@ -464,8 +455,6 @@ export function gameLabel(id: GameId): string {
       return "התאמות";
     case "environments":
       return "איפה הוא גר?";
-    case "shape-match":
-      return "צורה וחפץ";
     case "context-match":
       return "מתאים למקום";
     case "action-match":

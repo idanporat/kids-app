@@ -97,40 +97,6 @@ export const ENVIRONMENT_ROUNDS: EnvironmentRound[] = [
   { itemLabel: "מנורה", itemFile: "1f4a1.png", correctEnv: "home", envs: ["home", "land", "sea"] },
 ];
 
-/** G3 — צורה לחפץ: למעלה צורה גיאומטרית (SVG); בוחרים חפץ עם צורה דומה (לא אימוג׳י־״צורה״ שמבלבל) */
-export type ShapeMatchShapeId = "circle" | "square" | "triangle" | "star" | "heart" | "hexagon";
-
-export type ShapeMatchRound = {
-  shape: ShapeMatchShapeId;
-  correct: string;
-  options: [string, string, string];
-};
-
-export const SHAPE_MATCH_ROUNDS: ShapeMatchRound[] = [
-  { shape: "triangle", correct: "1f355.png", options: ["1f355.png", "1f34e.png", "26bd.png"] },
-  { shape: "triangle", correct: "1f3d4.png", options: ["1f3d4.png", "1f3e0.png", "1f4f0.png"] },
-  { shape: "triangle", correct: "1f384.png", options: ["1f384.png", "1f332.png", "1f333.png"] },
-  { shape: "triangle", correct: "1f6a8.png", options: ["1f6a8.png", "1f4f1.png", "1f34e.png"] },
-  { shape: "circle", correct: "1f34e.png", options: ["1f34e.png", "1f34c.png", "1f355.png"] },
-  { shape: "circle", correct: "26bd.png", options: ["26bd.png", "1f3c0.png", "1f3be.png"] },
-  { shape: "circle", correct: "1f35e.png", options: ["1f35e.png", "1f956.png", "1f355.png"] },
-  { shape: "circle", correct: "1f36a.png", options: ["1f36a.png", "1f355.png", "1f4d5.png"] },
-  { shape: "circle", correct: "1f9c3.png", options: ["1f9c3.png", "1f34b.png", "1f355.png"] },
-  { shape: "circle", correct: "1f37a.png", options: ["1f37a.png", "1f4d6.png", "1f355.png"] },
-  { shape: "circle", correct: "1f961.png", options: ["1f961.png", "1f35c.png", "1f355.png"] },
-  { shape: "circle", correct: "1f34a.png", options: ["1f34a.png", "1f34c.png", "1f355.png"] },
-  { shape: "square", correct: "1f4f0.png", options: ["1f4f0.png", "1f4d5.png", "1f4da.png"] },
-  { shape: "square", correct: "1f4f1.png", options: ["1f4f1.png", "1f4bb.png", "1f4f2.png"] },
-  { shape: "square", correct: "1f9f0.png", options: ["1f9f0.png", "1f4bd.png", "1f4bf.png"] },
-  { shape: "square", correct: "1f4f2.png", options: ["1f4f2.png", "1f4f1.png", "260e.png"] },
-  { shape: "star", correct: "1f31f.png", options: ["1f31f.png", "2728.png", "1f320.png"] },
-  { shape: "star", correct: "1f320.png", options: ["1f320.png", "1f52d.png", "1f52c.png"] },
-  { shape: "heart", correct: "1f495.png", options: ["1f495.png", "1f48c.png", "1f339.png"] },
-  { shape: "heart", correct: "1f490.png", options: ["1f490.png", "1f33c.png", "1f339.png"] },
-  { shape: "heart", correct: "1f48b.png", options: ["1f48b.png", "1f444.png", "1f445.png"] },
-  { shape: "hexagon", correct: "2744.png", options: ["2744.png", "1f34e.png", "1f355.png"] },
-];
-
 /** G4 — מקום לחפץ (תמונת הקשר בלבד — בלי מילים) */
 export type ContextMatchRound = {
   placeImage: string;

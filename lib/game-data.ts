@@ -6,7 +6,6 @@ export const GAME_IDS = [
   "category-pick",
   "associations",
   "environments",
-  "shape-match",
   "context-match",
   "action-match",
   "visual-closure",
@@ -53,11 +52,6 @@ export const GAME_LIST: GameMeta[] = [
     id: "environments",
     title: "איפה הוא גר?",
     emoji: "🌍",
-  },
-  {
-    id: "shape-match",
-    title: "צורה וחפץ",
-    emoji: "🔺",
   },
   {
     id: "context-match",
@@ -488,7 +482,6 @@ export {
   PHONETICS_ROUNDS,
   RHYME_ROUNDS,
   SEQUENCE_ROUNDS,
-  SHAPE_MATCH_ROUNDS,
   VISUAL_CLOSURE_ROUNDS,
   environmentMeta,
   type ActionMatchRound,
@@ -501,7 +494,5 @@ export {
   type PhoneticsRound,
   type RhymeRound,
   type SequenceRound,
-  type ShapeMatchRound,
-  type ShapeMatchShapeId,
   type VisualClosureRound,
 } from "./game-modules-data";
