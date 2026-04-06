@@ -43,6 +43,9 @@ create policy "deposits_select" on public.deposits
   );
 
 -- Function to get child account data by token (no auth needed, called from server)
+-- DROP first: Postgres cannot change OUT params with CREATE OR REPLACE (e.g. after a later migration adds columns).
+drop function if exists public.get_child_account_by_token(text);
+
 create or replace function public.get_child_account_by_token(p_token text)
 returns table (
   account_id uuid,
