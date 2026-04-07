@@ -9,10 +9,13 @@ import { deleteChildAccount } from "@/app/actions/delete-child";
 import { createDeposit } from "@/app/actions/deposits";
 import { updateAnnualInterest } from "@/app/actions/interest";
 import { formatIls } from "@/lib/format";
+import { GAME_LIST } from "@/lib/game-data";
 import {
   formatAttemptsLine,
   formatProgressUpdatedAt,
   gameLabel,
+  MODULE_GAME_PROGRESS_KEYS,
+  type ModuleProgress,
   parseGameProgressFromJson,
   totalCompletedRounds,
 } from "@/lib/game-progress";
@@ -395,36 +398,76 @@ function ChildGameProgressPanel({ snapshot }: { snapshot: GameProgressSnapshot }
   return (
     <div className="mt-3 space-y-2 text-sm">
       <p className="font-semibold text-slate-800 dark:text-slate-100">
-        סה״כ סיבובים שהושלמו (המשחקים הראשיים): {total}
+        סה״כ סיבובים שהושלמו: {total}
       </p>
       <ul className="grid gap-2 text-slate-700 dark:text-slate-300">
-        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
-          <div className="flex justify-between gap-2">
-            <span>גיבור הצורות</span>
-            <span className="font-medium tabular-nums">{p.shapeHero.roundsCompleted} סיבובים</span>
-          </div>
-          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-            {formatAttemptsLine(p.shapeHero.correctCount, p.shapeHero.wrongCount)}
-          </p>
-        </li>
-        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
-          <div className="flex justify-between gap-2">
-            <span>זיכרון הכוחות</span>
-            <span className="font-medium tabular-nums">עד {p.powerMemory.maxPairs} זוגות</span>
-          </div>
-          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-            התאמות: {formatAttemptsLine(p.powerMemory.correctCount, p.powerMemory.wrongCount)}
-          </p>
-        </li>
-        <li className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30">
-          <div className="flex justify-between gap-2">
-            <span>מה שייך?</span>
-            <span className="font-medium tabular-nums">{p.categoryPick.roundsCompleted} סיבובים</span>
-          </div>
-          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-            {formatAttemptsLine(p.categoryPick.correctCount, p.categoryPick.wrongCount)}
-          </p>
-        </li>
+        {GAME_LIST.map(({ id, title }) => {
+          if (id === "shape-hero") {
+            return (
+              <li
+                key={id}
+                className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30"
+              >
+                <div className="flex justify-between gap-2">
+                  <span>{title}</span>
+                  <span className="font-medium tabular-nums">{p.shapeHero.roundsCompleted} סיבובים</span>
+                </div>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                  {formatAttemptsLine(p.shapeHero.correctCount, p.shapeHero.wrongCount)}
+                </p>
+              </li>
+            );
+          }
+          if (id === "power-memory") {
+            return (
+              <li
+                key={id}
+                className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30"
+              >
+                <div className="flex justify-between gap-2">
+                  <span>{title}</span>
+                  <span className="font-medium tabular-nums">עד {p.powerMemory.maxPairs} זוגות</span>
+                </div>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                  התאמות: {formatAttemptsLine(p.powerMemory.correctCount, p.powerMemory.wrongCount)}
+                </p>
+              </li>
+            );
+          }
+          if (id === "category-pick") {
+            return (
+              <li
+                key={id}
+                className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30"
+              >
+                <div className="flex justify-between gap-2">
+                  <span>{title}</span>
+                  <span className="font-medium tabular-nums">{p.categoryPick.roundsCompleted} סיבובים</span>
+                </div>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                  {formatAttemptsLine(p.categoryPick.correctCount, p.categoryPick.wrongCount)}
+                </p>
+              </li>
+            );
+          }
+          const mk = MODULE_GAME_PROGRESS_KEYS[id];
+          if (!mk) return null;
+          const mod = p[mk] as ModuleProgress;
+          return (
+            <li
+              key={id}
+              className="rounded-lg border border-slate-200/90 bg-white/60 px-3 py-2 dark:border-slate-600/80 dark:bg-slate-900/30"
+            >
+              <div className="flex justify-between gap-2">
+                <span>{title}</span>
+                <span className="font-medium tabular-nums">{mod.roundsCompleted} סיבובים</span>
+              </div>
+              <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                {formatAttemptsLine(mod.correctCount, mod.wrongCount)}
+              </p>
+            </li>
+          );
+        })}
       </ul>
       <details className="rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-2 dark:border-slate-600 dark:bg-slate-800/50">
         <summary className="cursor-pointer text-sm font-medium text-slate-800 dark:text-slate-200">
