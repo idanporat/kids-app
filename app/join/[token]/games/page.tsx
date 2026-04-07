@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { GAME_LIST, type GameMeta } from "@/lib/game-data";
+import { loadJoinCategories } from "@/lib/join-session";
 
 type Props = {
   params: Promise<{ token: string }>;
@@ -21,6 +23,10 @@ function cardAccent(g: GameMeta): string {
 
 export default async function GamesIndexPage({ params }: Props) {
   const { token } = await params;
+  const { categories } = await loadJoinCategories(token);
+  if (!categories.includes("games")) {
+    redirect(`/join/${token}`);
+  }
 
   return (
     <div className="space-y-6">

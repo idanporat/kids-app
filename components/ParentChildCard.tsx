@@ -32,6 +32,8 @@ type Props = {
   avatarUrl: string | null;
   /** Synced when the child plays with the invite link (Supabase). */
   gameProgressSnapshot: GameProgressSnapshot | null;
+  /** לפי הגדרות ההורה — האם להציג משחקים וקישור למשחקים */
+  showChildGames?: boolean;
 };
 
 export function ParentChildCard({
@@ -42,6 +44,7 @@ export function ParentChildCard({
   inviteToken,
   avatarUrl,
   gameProgressSnapshot,
+  showChildGames = true,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -242,17 +245,19 @@ export function ParentChildCard({
               אחוז שנתי: <span className="font-medium text-slate-800 dark:text-slate-200">{annualInterestPercent}%</span>
             </p>
             <div className="mt-2 space-y-3">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/50">
-                <h3 className="text-sm font-medium">התקדמות במשחקים</h3>
-                {gameProgressSnapshot ? (
-                  <ChildGameProgressPanel snapshot={gameProgressSnapshot} />
-                ) : (
-                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    עדיין אין נתונים מהמכשיר של הילד. הנתונים מסתנכרנים לשרת כשהילד משחק דרך קישור ההזמנה
-                    (גם בלי שינוי בדפדפן זה).
-                  </p>
-                )}
-              </div>
+              {showChildGames ? (
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/50">
+                  <h3 className="text-sm font-medium">התקדמות במשחקים</h3>
+                  {gameProgressSnapshot ? (
+                    <ChildGameProgressPanel snapshot={gameProgressSnapshot} />
+                  ) : (
+                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                      עדיין אין נתונים מהמכשיר של הילד. הנתונים מסתנכרנים לשרת כשהילד משחק דרך קישור ההזמנה
+                      (גם בלי שינוי בדפדפן זה).
+                    </p>
+                  )}
+                </div>
+              ) : null}
               {inviteToken && (
                 <>
                   <button
@@ -262,12 +267,14 @@ export function ParentChildCard({
                   >
                     {copied ? "הקישור הועתק!" : "📋 העתק קישור לילד"}
                   </button>
-                  <a
-                    href={`/join/${inviteToken}/games`}
-                    className="block text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
-                  >
-                    פתיחת בחירת משחקים (בדפדפן זה)
-                  </a>
+                  {showChildGames ? (
+                    <a
+                      href={`/join/${inviteToken}/games`}
+                      className="block text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                    >
+                      פתיחת בחירת משחקים (בדפדפן זה)
+                    </a>
+                  ) : null}
                 </>
               )}
             </div>

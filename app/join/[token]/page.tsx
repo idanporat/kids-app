@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { estimatedEarningsFromAnnualPercent } from "@/lib/earnings";
 import { formatIls } from "@/lib/format";
+import { normalizeEnabledCategories } from "@/lib/child-categories";
+import { getJoinAccountByToken } from "@/lib/join-session";
 
 const dateFmt = new Intl.DateTimeFormat("he-IL", {
   dateStyle: "short",
@@ -15,15 +17,18 @@ type Props = {
 
 export default async function ChildViewPage({ params }: Props) {
   const { token } = await params;
-  const supabase = createClient(await cookies());
-
-  const { data: accountData } = await supabase.rpc("get_child_account_by_token", {
-    p_token: token,
-  });
-  const account = accountData?.[0];
+  const account = await getJoinAccountByToken(token);
   if (!account) {
     redirect("/login");
   }
+  const categories = normalizeEnabledCategories(
+    account.enabled_child_categories as string[] | undefined
+  );
+  if (!categories.includes("savings")) {
+    redirect(`/join/${token}/games`);
+  }
+
+  const supabase = createClient(await cookies());
 
   const balance = Number(account.balance);
   const rate = Number(account.annual_interest_percent);

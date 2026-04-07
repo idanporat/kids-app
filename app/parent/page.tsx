@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { SignOutButton } from "@/components/SignOutButton";
 import { ParentChildCard } from "@/components/ParentChildCard";
 import { InviteChildForm } from "@/components/InviteChildForm";
+import { ParentChildCategoriesForm } from "@/components/ParentChildCategoriesForm";
+import { normalizeEnabledCategories } from "@/lib/child-categories";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function ParentPage() {
@@ -24,6 +26,17 @@ export default async function ParentPage() {
   if (!profile || profile.role !== "parent") {
     redirect("/child");
   }
+
+  const { data: settings } = await supabase
+    .from("parent_settings")
+    .select("enabled_child_categories")
+    .eq("parent_id", user.id)
+    .maybeSingle();
+
+  const enabledChildCategories = normalizeEnabledCategories(
+    settings?.enabled_child_categories as string[] | undefined
+  );
+  const showChildGames = enabledChildCategories.includes("games");
 
   const { data: accounts } = await supabase
     .from("child_accounts")
@@ -70,6 +83,14 @@ export default async function ParentPage() {
         <SignOutButton />
       </header>
 
+      <section className="mb-8 rounded-2xl border border-slate-200 bg-[var(--card)] p-6 dark:border-slate-700">
+        <h2 className="text-lg font-semibold mb-1">מה הילדים רואים בקישור</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          חיסכון (יתרה והפקדות), משחקים, או שניהם — ניתן לשנות בכל עת.
+        </p>
+        <ParentChildCategoriesForm defaultSelected={enabledChildCategories} />
+      </section>
+
       <div className="mb-8">
         <InviteChildForm />
       </div>
@@ -95,6 +116,7 @@ export default async function ParentPage() {
                   inviteToken={token ?? null}
                   avatarUrl={acc.avatar_url ?? null}
                   gameProgressSnapshot={progressByAccountId.get(acc.id) ?? null}
+                  showChildGames={showChildGames}
                 />
               </li>
             );
